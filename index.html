@@ -436,39 +436,23 @@ h2 em {
     scale:1;
   }
 }
-.badge {
+.badge{
   position:absolute;
   right:-2%;
   bottom:6%;
   width:clamp(96px,16vw,136px);
   aspect-ratio:1;
   z-index:3;
-  color:var(--on-accent);
-  background:var(--accent);
   border-radius:50%;
+  overflow:hidden;
   display:grid;
   place-items:center;
   transform:translate3d(calc(var(--mx,0)*-30px),calc(var(--my,0)*-30px),0);
 }
-.badge svg {
+.badge-logo{
   width:100%;
   height:100%;
-  animation:spin 22s linear infinite;
-}
-.badge text {
-  font:600 10.6px 'Hanken Grotesk',sans-serif;
-  letter-spacing:.06em;
-  fill:currentColor;
-}
-.badge .star {
-  position:absolute;
-  width:26%;
-  height:26%;
-}
-@keyframes spin {
-  to {
-    transform:rotate(360deg);
-  }
+  object-fit:cover;
 }
 .arch-hero {
   border-radius:999px 999px 24px 24px !important;
@@ -1197,14 +1181,41 @@ h2 em {
   color:var(--bg);
 }
 /* unhas: antes/depois + montador */
+/* unhas: antes/depois + montador */
 .ba {
   position:relative;
-  aspect-ratio:16/10;
+  width:100%;
+  aspect-ratio:543/700;
   border-radius:28px 28px 6px 6px;
   overflow:hidden;
   --pos:50%;
   user-select:none;
   box-shadow:0 0 0 1px var(--line);
+}
+
+.ba-a,
+.ba-b {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.ba-a img,
+.ba-b img {
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+}
+
+.ba .ph span {
+  display:none;
+}
+
+.ba-b {
+  clip-path:inset(0 calc(100% - var(--pos)) 0 0);
 }
 .ba-a,.ba-b {
   position:absolute;
@@ -1934,12 +1945,12 @@ const MK_PORTFOLIO=[
 ];
 const MK_CATS=['Todos','Posts','Vídeos','Marca','Stories'];
 const NL_GALLERY=[
- {id:'nl-1',t:'',c:'Temáticas',tone:2,d:''},
- {id:'nl-2',t:'',c:'Chrome',tone:3,d:''},
+ {id:'nl-1',t:'',c:'Autênticas',tone:2,d:''},
+ {id:'nl-2',t:'',c:'Básicas',tone:3,d:''},
  {id:'nl-3',t:'',c:'Delicadas',tone:1,d:'.'},
- {id:'nl-4',t:'',c:'Temáticas',tone:4,d:''},
+ {id:'nl-4',t:'',c:'Autênticas',tone:4,d:''},
  {id:'nl-5',t:'',c:'Nail art',tone:2,d:''},
- {id:'nl-6',t:'',c:'Chrome',tone:1,d:''},
+ {id:'nl-6',t:'',c:'Básicas',tone:1,d:''},
  {id:'nl-7',t:'',c:'Delicadas',tone:3,d:''},
  {id:'nl-8',t:'',c:'Nail art',tone:4,d:''}
 ];
@@ -1985,7 +1996,7 @@ const FAQ_NL=[
  {t:'Como agendo meu horário?',p:'Pelo WhatsApp. Monte o seu set aqui no site e envie: já chega tudo certinho.'},
  {t:'Posso levar uma referência?',p:'Claro. Envie fotos de inspiração antes do atendimento para combinarmos a arte.'},
  {t:'Você faz temas personalizados?',p:'Sim! Copa do Mundo, séries, cores da sua marca, o que você imaginar.'},
- {t:'Qual a diferença entre os estilos?',p:'Natural é delicado e limpo. Chrome tem acabamento espelhado. Nail art leva desenhos e detalhes. Temático conta uma história.'}
+ {t:'Qual a diferença entre os estilos?',p:'Natural é delicado e limpo. Autênticas são unhas que expressam sua personalidade. Nail art leva desenhos e detalhes'}
 ];
 
 const PRICES=[
@@ -2064,7 +2075,7 @@ function marketingHTML(){
    '<p class="lead">Criação de artes, vídeos e conteúdo para redes sociais, com identidade, intenção e o seu jeito em cada post.</p>'+
    '<div class="row"><button class="btn" data-act="go" data-target="diagnostico">Descobrir meu pacote</button><button class="btn ghost" data-act="go" data-target="portfolio">Ver portfólio</button></div></div>'+
    '<div class="hero-art"><div class="frame f1">'+slot('mk-hero-a','Portfólio',1)+'</div><div class="frame f2">'+slot('mk-hero-b','Marca autêntica',3)+'</div><div class="frame f3">'+slot('mk-hero-c','Eu não crio videozinhos!',4)+'</div>'+
-   '<div class="badge" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="circ" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><text><textPath href="#circ">social media · artes · vídeos · conteúdo · </textPath></text></svg>'+STAR+'</div></div></section>'+
+   '<div class="badge" aria-hidden="true"><img src="img/jr-mkt.jpeg" alt="Julia Ruth Marketing" class="badge-logo"></div></div></section>'+
   marquee(['Artes','Vídeos','Conteúdo','Identidade visual','Reels','Stories','Portfólio'])+
   '<section class="wrap" id="sobre"><div class="about"><div class="portrait">'+slot('mk-about','Foto da '+p.name,1)+'</div><div>'+
    '<p class="big">'+esc(p.name)+', transformando ideias em estratégias que fazem sua marca crescer.</p>'+
@@ -2348,7 +2359,7 @@ function nailsHTML(){
   '<section class="hero" id="topo-nl"><div><h1 class="serif">Julia Ruth <em>Nails.</em></h1><p class="lead">Nail art autoral, do delicado ao temático. Cada set pensado para quem vai usar.</p>'+
    '<div class="row"><button class="btn" data-act="go" data-target="monte">Montar meu set</button><button class="btn ghost" data-act="go" data-target="estilos">Ver estilos</button></div></div>'+
    '<div class="hero-art"><div class="frame f2 arch-hero" style="width:62%;aspect-ratio:3/4.3;right:auto;left:19%;top:0">'+slot('nl-hero','Sua unha, sua história',2)+'</div>'+
-   '<div class="badge" aria-hidden="true"><svg viewBox="0 0 120 120"><text><textPath href="#circ2">nail art · básicas · autênticas · delicadas · </textPath></text><defs><path id="circ2" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs></svg>'+STAR+'</div></div></section>'+
+   '<div class="badge" aria-hidden="true"><img src="img/jr-nd.jpeg" alt="Julia Ruth Marketing" class="badge-logo"></div></div></section>'+
   marquee(['Nail art','Básicas','Autênticas','Delicadas','Autorais'])+
   '<section class="wrap" id="estilos"><div class="head"><div><h2 class="serif">Estilos que <em>eu amo</em> fazer</h2><p class="sub">Toque em qualquer set para ver de perto.</p></div>'+chips('nl',NL_CATS)+'</div><div class="grid arches" id="grid-nl">'+gridHTML('nl')+'</div></section>'+
   '<section class="wrap tight" id="antes-depois"><div class="head"><div><h2 class="serif">Antes e <em>depois</em></h2><p class="sub">Arraste para comparar.</p></div></div>'+
@@ -2474,6 +2485,7 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 
 /* ---------- edição de imagens (só para quem pode editar) ---------- */
+
 function fileToDataURL(file){
   return new Promise((res,rej)=>{
     const fr=new FileReader();
@@ -2523,11 +2535,12 @@ function slotFromClick(e){
 function slotDialog(el){
   const id=el.dataset.slot, title=el.dataset.title||'Imagem', has=!!state.images[id]||!!state.videos[id];
   const bg=document.createElement('div'); bg.className='dlg-bg';
-  bg.innerHTML='<div class="dlg" role="dialog" aria-modal="true"><h3>'+esc(title)+'</h3><div class="thumb-prev"><div class="slot" style="position:relative">'+slotInner(id,title,el.dataset.tone||1)+'</div></div><p style="color:var(--muted);font-size:14px">A imagem é ajustada automaticamente; o vídeo é aceito até 20MB. Depois de trocar, toque em “Publicar alterações”.</p><div class="row"><button class="btn" data-d="pick">Escolher imagem</button><button class="btn" data-d="pick-video">Escolher vídeo</button>'+(has?'<button class="btn ghost" data-d="rm">Remover</button>':'')+'<button class="btn ghost" data-d="x">Fechar</button></div></div>';
+  bg.innerHTML='<div class="dlg" role="dialog" aria-modal="true"><h3>'+esc(title)+'</h3><div class="thumb-prev"><div class="slot" style="position:relative">'+slotInner(id,title,el.dataset.tone||1)+'</div></div><p style="color:var(--muted);font-size:14px">A imagem é ajustada automaticamente; o vídeo é aceito até 20MB. Depois de trocar, toque em “Publicar alterações”.</p><div class="row"><button class="btn" data-d="pick">Escolher imagem</button>'+(state.images[id]?'<button class="btn" data-d="adjust">Editar enquadramento</button>':'')+'<button class="btn" data-d="pick-video">Escolher vídeo</button>'+(has?'<button class="btn ghost" data-d="rm">Remover</button>':'')+'<button class="btn ghost" data-d="x">Fechar</button></div></div>';
   bg.addEventListener('click',async ev=>{
     const d=ev.target.dataset.d;
     if(ev.target===bg||d==='x'){ bg.remove(); return; }
-    if(d==='rm'){ delete state.images[id]; delete state.videos[id]; dirty++; refreshSlot(id); mountEditBar(); bg.remove(); }
+    if(d==='rm'){ delete state.images[id]; delete state.videos[id]; delete state.imageEdits[id]; dirty++; refreshSlot(id); mountEditBar(); bg.remove(); }
+    if(d==='adjust'){ bg.remove(); imageEditor(el); }
     if(d==='pick'){
       const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
       inp.onchange=async()=>{
