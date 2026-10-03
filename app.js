@@ -487,7 +487,7 @@ function nailsHTML(){
   X('info')+'</div><div class="nview" data-v="agendar">'+
   '<section class="wrap tight" id="agendar"><div class="contact"><div><h2 class="serif">Bora <em>agendar?</em></h2><p class="sub">Me chame no WhatsApp com a sua referência e escolhemos o melhor horário.</p></div><div class="links-col" style="margin-top:0"><a href="'+wa('Olá, '+p.name+'! Quero agendar unhas.')+'" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>'+(p.igNails?'<a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram @'+esc(p.igNails.replace(/^@/,''))+'</a>':'')+'</div></div></section>'+
   '<section class="wrap tight"><div class="portal"><p>Tem um negócio? Vamos colocar a sua marca no digital.</p><button class="btn" data-act="mode" data-mode="marketing">Conhecer o marketing</button></div></section>'+
-  X('agendar')+'</div></div>';
+  X('agendar')+'</div><div class="nview" data-v="cliente"><section class="wrap tight" id="cliente-area"><div class="head"><div><h2 class="serif">Minha <em>área</em></h2><p class="sub">Agenda, lista de desejos e avaliações.</p></div></div><div id="cliente-root"></div></section></div></div>';
 }
 
 /* ---------- navegação ---------- */
@@ -503,6 +503,7 @@ function navHTML(){
    {v:'criar',t:'Criar',i:[['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['ocasioes','Unhas por ocasião']]},
    {v:'valores',t:'Valores',i:[['precos','Catálogo de preços'],['preco-nail-art','Preço da nail art'],['duvidas-valores','Dúvidas sobre valores']]},
    {v:'info',t:'Informações',i:[['primeira-vez','Primeira vez'],['cuidados','Cuidados'],['como-chegar','Como chegar'],['duvidas-nl','Dúvidas'],['atendimento','Como é o atendimento'],['biosseguranca','Higiene e cuidados']]},
+   {v:'cliente',t:'Minha área',i:[['cliente-area','Entrar e agenda'],['avaliacoes-pub','Avaliações']]},
    {v:'agendar',t:'Agendar',i:[['agendar','Agendar'],['agendar-passos','Como agendar']]}];
   const L=(arr,w)=>'<span data-w="'+w+'" style="display:contents">'+arr.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span>';
   const linksTop='<nav class="links" aria-label="Seções">'+'<span data-w="marketing" style="display:contents">'+ngTop(MG)+'</span>'+'<span data-w="nails" style="display:contents">'+ngTop(NG)+'</span>'+'</nav>';
@@ -522,6 +523,7 @@ function render(){
   app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>'+'<a class="wa-fab" href="'+wa()+'" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7a11 11 0 0 1-4.5-3.9c-.4-.5-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.4.1.2.1.8-.1 1.4z"/></svg></a>';
   document.body.classList.toggle('editing',editing);
   if(ART) mountEditBar();
+  if(window.ClienteUI) window.ClienteUI.mount($('#cliente-root'));
   window.scrollTo(0,y);
 }
 
