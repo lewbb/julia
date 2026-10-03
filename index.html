@@ -1880,6 +1880,11 @@ h2 em {
 
 
 
+
+.calc-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.calc-row span{flex:1}.calc-row input[type=number]{padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.calc-tot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-top:22px}
+.calc-tot .serif{font-size:clamp(34px,6vw,52px);line-height:1}.calc-tot small{color:var(--muted)}
 </style>
 </head>
 <body data-k="" monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.22">
@@ -2360,13 +2365,13 @@ function nailsHTML(){
    '<div class="row"><button class="btn" data-act="go" data-target="monte">Montar meu set</button><button class="btn ghost" data-act="go" data-target="estilos">Ver estilos</button></div></div>'+
    '<div class="hero-art"><div class="frame f2 arch-hero" style="width:62%;aspect-ratio:3/4.3;right:auto;left:19%;top:0">'+slot('nl-hero','Sua unha, sua história',2)+'</div>'+
    '<div class="badge" aria-hidden="true"><img src="img/jr-nd.jpeg" alt="Julia Ruth Marketing" class="badge-logo"></div></div></section>'+
-  marquee(['Nail art','Básicas','Autênticas','Delicadas','Autorais'])+
+  marquee(['Nail art','Básicas','Autênticas','Delicadas','Autorais'])+nlAboutHTML()+
   '<section class="wrap" id="estilos"><div class="head"><div><h2 class="serif">Estilos que <em>eu amo</em> fazer</h2><p class="sub">Toque em qualquer set para ver de perto.</p></div>'+chips('nl',NL_CATS)+'</div><div class="grid arches" id="grid-nl">'+gridHTML('nl')+'</div></section>'+
   '<section class="wrap tight" id="antes-depois"><div class="head"><div><h2 class="serif">Antes e <em>depois</em></h2><p class="sub">Arraste para comparar.</p></div></div>'+
    '<div class="ba"><div class="ba-a">'+slot('nl-after','Depois',2)+'</div><div class="ba-b">'+slot('nl-before','Antes',3)+'</div><span class="ba-line"></span><span class="ba-knob" aria-hidden="true">↔</span><input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois"><span class="ba-tag l">Antes</span><span class="ba-tag r">Depois</span></div></section>'+
   '<section class="wrap tight" id="monte"><div class="head"><div><h2 class="serif">Monte o <em>seu set</em></h2><p class="sub">Envie fotos de inspiração, recorte a unha de cada dedo e veja tudo montado na mão modelo.</p></div></div>'+
    sbBuilderHTML()+'</section>'+
-  priceHTML()+ '<section class="wrap tight" id="duvidas-nl"><div class="split"><div class="stick"><h2 class="serif">Dúvidas <em>comuns</em></h2></div>'+acc(FAQ_NL)+'</div></section>'+
+  priceHTML()+nlExtrasHTML()+ '<section class="wrap tight" id="duvidas-nl"><div class="split"><div class="stick"><h2 class="serif">Dúvidas <em>comuns</em></h2></div>'+acc(FAQ_NL)+'</div></section>'+
   '<section class="wrap tight" id="agendar"><div class="contact"><div><h2 class="serif">Bora <em>agendar?</em></h2><p class="sub">Me chame no WhatsApp com a sua referência e escolhemos o melhor horário.</p></div><div class="links-col" style="margin-top:0"><a href="'+wa('Olá, '+p.name+'! Quero agendar unhas.')+'" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>'+(p.igNails?'<a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram @'+esc(p.igNails.replace(/^@/,''))+'</a>':'')+'</div></div></section>'+
   '<section class="wrap tight"><div class="portal"><p>Tem um negócio? Vamos colocar a sua marca no digital.</p><button class="btn" data-act="mode" data-mode="marketing">Conhecer o marketing</button></div></section>'+
   '</div>';
@@ -2375,7 +2380,7 @@ function nailsHTML(){
 /* ---------- navegação ---------- */
 function navHTML(){
   const mk=[['sobre','Sobre'],['servicos','Serviços'],['portfolio','Portfólio'],['processo','Processo'],['diagnostico','Diagnóstico'],['contato','Contato']];
-  const nl=[['estilos','Estilos'],['antes-depois','Antes e depois'],['monte','Monte seu set'],['precos','Preços'],['duvidas-nl','Dúvidas'],['agendar','Agendar']];
+  const nl=[['sobre-nl','Sobre'],['estilos','Estilos'],['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['precos','Preços'],['cuidados','Cuidados'],['como-chegar','Como chegar'],['agendar','Agendar']];
   const L=(arr,w)=>'<span data-w="'+w+'" style="display:contents">'+arr.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span>';
   const linksTop='<nav class="links" aria-label="Seções">'+L(mk,'marketing')+L(nl,'nails')+'</nav>';
   const sheet='<div class="sheet" id="sheet"><button class="x" data-act="menu" aria-label="Fechar menu">×</button><span data-w="marketing" style="display:contents">'+mk.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span><span data-w="nails" style="display:contents">'+nl.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span></div>';
@@ -2398,6 +2403,88 @@ function render(){
 }
 
 /* ---------- ações ---------- */
+
+/* ---------- novidades Unhas (sem banco) ---------- */
+const NL_LOC={addr:'[ENDEREÇO DO ATENDIMENTO]',ref:'[Ponto de referência]',hours:'[Dias e horários de atendimento]'};
+const NL_PRIMEIRA=[
+ {t:'Como é o primeiro atendimento?',p:'[Explique como funciona: conversa, escolha do set, tempo médio e o que a cliente pode esperar.]'},
+ {t:'O que levar?',p:'[Fotos de referência, unhas sem esmalte se possível, e a vontade de contar o que você imagina.]'},
+ {t:'Preciso pagar sinal?',p:'[Explique a política de sinal para novas clientes.]'}
+];
+const NL_CUIDADOS=[
+ {t:'Nas primeiras 24 horas',p:'[Evite água muito quente, produtos de limpeza sem luvas e usar as unhas como ferramenta.]'},
+ {t:'No dia a dia',p:'[Hidrate cutículas com óleo, use luvas para limpeza e não arranque nem puxe a unha.]'},
+ {t:'Quando fazer a manutenção',p:'A cada 15 dias para o Molde F1, conforme a tabela de preços. [Ajuste para os outros procedimentos.]'},
+ {t:'Algo deu errado?',p:'[Se descolar ou quebrar, fale comigo pelo WhatsApp. Não tente arrancar em casa.]'}
+];
+const NL_PRECO_ART=[
+ {id:'nl-pr-1',t:'Detalhes simples',d:'[Ex.: francesinha, glitter, 1 ou 2 unhas decoradas. Explique o que pesa no valor.]'},
+ {id:'nl-pr-2',t:'Arte média',d:'[Ex.: desenhos à mão livre, mais cores e adesivos em várias unhas.]'},
+ {id:'nl-pr-3',t:'Arte complexa',d:'[Ex.: temas, personagens e pedrarias. O valor é combinado pelo WhatsApp com a sua referência.]'}
+];
+const MQ={
+ nm:{tab:'Ruth Nail Match',title:'Qual estilo é a sua cara?',
+  qs:[{q:'Como você descreveria o seu jeito?',o:['Delicada e discreta','Autêntica e ousada','Divertida e criativa','Elegante e clássica']},
+      {q:'Para onde vão essas unhas?',o:['Dia a dia','Festa ou evento','Viagem ou tema especial','Trabalho']},
+      {q:'Qual paleta chama você?',o:['Nude e rosé','Cores fortes e contraste','Tons vibrantes e temas','Neutros e vermelho clássico']}],
+  res:[{n:'Delicadas',d:'Toques leves, cores suaves e acabamento limpo.'},{n:'Autênticas',d:'Unhas que expressam a sua personalidade, com a sua assinatura.'},{n:'Nail art',d:'Desenhos, temas e muitos detalhes. A sua unha vira uma pequena obra.'},{n:'Básicas',d:'Clássico bem feito: cor lisa, brilho e durabilidade.'}]},
+ fit:{tab:'Unha que combina comigo',title:'Qual formato combina com você?',
+  qs:[{q:'Como é a sua rotina?',o:['Digito e uso muito as mãos','Trabalho com as mãos','Escritório e vida social','Gosto de unhas que chamem atenção']},
+      {q:'O que você quer valorizar?',o:['Dedos curtos e praticidade','Um visual natural','Alongar os dedos','Ousadia total']},
+      {q:'Como você lida com manutenção?',o:['Quero algo resistente','Prefiro baixa manutenção','Faço manutenção em dia','Faço sem problema']}],
+  res:[{n:'Curta e quadrada',d:'Resistente e prática para a rotina corrida.'},{n:'Oval, tamanho médio',d:'Visual natural, discreto e que combina com tudo.'},{n:'Amêndoa, média a longa',d:'Alonga os dedos e dá delicadeza.'},{n:'Stiletto, longa',d:'Impacto máximo. Pede cuidado e manutenção em dia.'}]}
+};
+const mq={k:'nm',step:0,ans:[]};
+function mqHTML(){
+ const Q=MQ[mq.k];
+ const tabs='<div class="chips" style="margin-bottom:22px">'+Object.keys(MQ).map(k=>'<button class="chip" data-act="mq-tab" data-k="'+k+'" aria-pressed="'+(k===mq.k)+'">'+MQ[k].tab+'</button>').join('')+'</div>';
+ if(mq.step>=Q.qs.length){
+  const c=[0,0,0,0]; mq.ans.forEach(a=>c[a]++);
+  const mx=Math.max.apply(null,c); let i=c.indexOf(mx); if(c[mq.ans[0]]===mx) i=mq.ans[0];
+  const r=Q.res[i], msg='Olá, '+state.profile.name+'! Fiz o '+Q.tab+' no seu site e o resultado foi: '+r.n+'. Quero agendar!';
+  return tabs+'<p class="sub">Seu resultado</p><h3 class="serif" style="font-size:clamp(32px,5vw,48px);margin:6px 0 10px">'+esc(r.n)+'</h3><p>'+esc(r.d)+'</p><div class="row" style="margin-top:20px"><a class="btn" href="'+wa(msg)+'" target="_blank" rel="noopener">Agendar com esse estilo</a><button class="btn ghost" data-act="mq-reset">Refazer</button></div>';
+ }
+ const q=Q.qs[mq.step];
+ return tabs+'<p class="sub">Pergunta '+(mq.step+1)+' de '+Q.qs.length+'</p><h3 class="serif" style="font-size:clamp(26px,4vw,38px);margin:6px 0 18px">'+esc(q.q)+'</h3><div style="display:grid;gap:10px;max-width:460px">'+q.o.map((o,i)=>'<button class="btn ghost" data-act="mq-pick" data-v="'+i+'">'+esc(o)+'</button>').join('')+'</div>'+(mq.step?'<button class="btn ghost sm" style="margin-top:16px" data-act="mq-back">Voltar</button>':'');
+}
+const CALC_SV=[['Molde F1, aplicação',150,120],['Molde F1, manutenção',120,120],['Esmaltação em gel',80,60],['Banho de gel',120,90],['Pedicure',80,90],['Remoção de procedimento',30,30],['Nail art complexa (valor a consultar)',0,30]];
+const brl=n=>'R$ '+n.toFixed(2).replace('.',',');
+function calcHTML(){
+ return '<section class="wrap tight" id="calculadora"><div class="head"><div><h2 class="serif">Calculadora de <em>procedimento</em></h2><p class="sub">Escolha o que você quer e veja o valor e o tempo estimados.</p></div></div><div class="price-card" id="calc">'+
+  CALC_SV.map(s=>'<label class="calc-row"><input type="checkbox" data-t="'+esc(s[0])+'" data-v="'+s[1]+'" data-m="'+s[2]+'"><span>'+esc(s[0])+'</span><b>'+(s[1]?brl(s[1]):'consultar')+'</b></label>').join('')+
+  '<label class="calc-row"><span>Reposição de unha (R$5,00 cada)</span><input id="calc-rep" type="number" min="0" max="20" value="0" style="width:70px"></label>'+
+  '<div class="calc-tot"><div><small>Total estimado</small><div class="serif" id="calc-total">R$ 0,00</div><small id="calc-time">0 min</small></div><a class="btn" id="calc-wa" href="'+wa()+'" target="_blank" rel="noopener">Enviar para a Julia</a></div></div></section>';
+}
+function calcUpdate(){
+ const c=$('#calc'); if(!c) return; let v=0,m=0,it=[];
+ $$('input[type=checkbox]:checked',c).forEach(i=>{v+=+i.dataset.v; m+=+i.dataset.m; it.push(i.dataset.t);});
+ const q=Math.max(0,Math.min(20,parseInt($('#calc-rep').value,10)||0)); if(q){v+=q*5; it.push('Reposição de unha x'+q);}
+ $('#calc-total').textContent=brl(v); $('#calc-time').textContent=(m>=60?Math.floor(m/60)+'h':'')+(m%60?(m>=60?String(m%60).padStart(2,'0'):m+' min'):(m?'':'0 min'));
+ $('#calc-wa').href=wa(it.length?'Olá, '+state.profile.name+'! Simulei no site: '+it.join(', ')+'. Total estimado: '+brl(v)+'.':'');
+}
+function nlAboutHTML(){
+ return '<section class="wrap tight" id="sobre-nl"><div class="about"><div class="portrait">'+slot('nl-about','Foto da '+state.profile.name,1)+'</div><div><h2 class="serif">Oi, eu sou a <em>'+esc(state.profile.name.split(' ')[0])+'</em></h2><p class="sub">[Escreva aqui a sua história com as unhas, seu estilo de atendimento e o que a cliente pode esperar.]</p></div></div></section>';
+}
+function nlExtrasHTML(){
+ const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(NL_LOC.addr);
+ return '<section class="wrap tight" id="match"><div class="quiz"><div><h2 class="serif">Descubra o seu <em>match</em></h2><p class="sub">Responda três perguntas e veja o que combina com você.</p></div><div class="qbox" id="mq-box">'+mqHTML()+'</div></div></section>'+
+  '<section class="wrap tight" id="preco-nail-art"><div class="head"><div><h2 class="serif">Como escolho o preço da <em>nail art</em></h2><p class="sub">Entenda o que influencia o valor da sua arte.</p></div></div><div class="price-grid">'+NL_PRECO_ART.map(x=>'<div class="price-card">'+slot(x.id,x.t,2)+'<h3 class="serif" style="margin-top:14px">'+esc(x.t)+'</h3><p>'+esc(x.d)+'</p></div>').join('')+'</div></section>'+
+  calcHTML()+
+  '<section class="wrap tight" id="primeira-vez"><div class="split"><div class="stick"><h2 class="serif">Primeira <em>vez</em> aqui?</h2></div>'+acc(NL_PRIMEIRA)+'</div></section>'+
+  '<section class="wrap tight" id="cuidados"><div class="split"><div class="stick"><h2 class="serif"><em>Cuidados</em> com as unhas</h2></div>'+acc(NL_CUIDADOS)+'</div></section>'+
+  '<section class="wrap tight" id="como-chegar"><div class="contact"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.ref)+'<br>'+esc(NL_LOC.hours)+'</p></div><div class="links-col" style="margin-top:0"><a href="'+maps+'" target="_blank" rel="noopener">Abrir no Google Maps</a><a href="https://waze.com/ul?q='+encodeURIComponent(NL_LOC.addr)+'" target="_blank" rel="noopener">Abrir no Waze</a></div></div></section>';
+}
+app.addEventListener('click',e=>{
+ const a=e.target.closest('[data-act^="mq-"]'); if(!a) return; const act=a.dataset.act, n=MQ[mq.k].qs.length;
+ if(act==='mq-tab'){ mq.k=a.dataset.k; mq.step=0; mq.ans=[]; }
+ else if(act==='mq-pick'){ mq.ans[mq.step]=+a.dataset.v; mq.step++; }
+ else if(act==='mq-back'){ mq.step=Math.max(0,mq.step-1); }
+ else if(act==='mq-reset'){ mq.step=0; mq.ans=[]; }
+ $('#mq-box').innerHTML=mqHTML();
+});
+app.addEventListener('input',e=>{ if(e.target.closest('#calc')) calcUpdate(); });
+app.addEventListener('change',e=>{ if(e.target.closest('#calc')) calcUpdate(); });
+
 let toastT;
 
 function toast(m){ const t=$('#toast'); if(!t) return; t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3200); }
