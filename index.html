@@ -1885,6 +1885,40 @@ h2 em {
 .calc-row span{flex:1}.calc-row input[type=number]{padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
 .calc-tot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-top:22px}
 .calc-tot .serif{font-size:clamp(34px,6vw,52px);line-height:1}.calc-tot small{color:var(--muted)}
+
+.nview{display:none}
+html[data-nv="inicio"] .nview[data-v="inicio"]{display:block;animation:nvin .35s ease both}
+html[data-nv="inicio"] .ng-b[data-v="inicio"]{background:var(--accent);color:var(--on-accent)}
+html[data-nv="inicio"] .sg>button[data-v="inicio"]{color:var(--accent);font-style:italic}
+html[data-nv="criar"] .nview[data-v="criar"]{display:block;animation:nvin .35s ease both}
+html[data-nv="criar"] .ng-b[data-v="criar"]{background:var(--accent);color:var(--on-accent)}
+html[data-nv="criar"] .sg>button[data-v="criar"]{color:var(--accent);font-style:italic}
+html[data-nv="valores"] .nview[data-v="valores"]{display:block;animation:nvin .35s ease both}
+html[data-nv="valores"] .ng-b[data-v="valores"]{background:var(--accent);color:var(--on-accent)}
+html[data-nv="valores"] .sg>button[data-v="valores"]{color:var(--accent);font-style:italic}
+html[data-nv="info"] .nview[data-v="info"]{display:block;animation:nvin .35s ease both}
+html[data-nv="info"] .ng-b[data-v="info"]{background:var(--accent);color:var(--on-accent)}
+html[data-nv="info"] .sg>button[data-v="info"]{color:var(--accent);font-style:italic}
+html[data-nv="agendar"] .nview[data-v="agendar"]{display:block;animation:nvin .35s ease both}
+html[data-nv="agendar"] .ng-b[data-v="agendar"]{background:var(--accent);color:var(--on-accent)}
+html[data-nv="agendar"] .sg>button[data-v="agendar"]{color:var(--accent);font-style:italic}
+
+@keyframes nvin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+html[data-mode="nails"] .links{gap:4px;padding:4px;border-radius:99px;background:var(--paper);border:1px solid var(--line)}
+.ng{position:relative;display:flex}
+.ng-b{font:inherit;font-weight:600;font-size:14.5px;color:var(--muted);padding:8px 16px;border-radius:99px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .25s,color .25s}
+.ng-b:hover{color:var(--ink);background:var(--accent-soft)}
+.ng-b.has::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.ng-m{position:absolute;top:100%;left:50%;min-width:210px;padding:8px;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 40px -16px var(--shadow);opacity:0;visibility:hidden;transform:translate(-50%,6px);transition:opacity .2s,transform .2s,visibility .2s}
+.ng-m::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+.ng:hover .ng-m,.ng:has(:focus-visible) .ng-m{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.links .ng-m a{display:block;padding:10px 14px;border:0;border-radius:12px;color:var(--ink);font-weight:500;white-space:nowrap}
+.links .ng-m a:hover{background:var(--accent-soft);color:var(--accent);border:0}
+.sheet{overflow-y:auto}
+.sg{display:flex;flex-direction:column;border-bottom:1px solid var(--line);padding:8px 0}
+.sg>button{font-family:'Instrument Serif',serif;font-size:38px;text-align:left;line-height:1.15;color:var(--ink);cursor:pointer}
+.sg-l{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 6px}
+.sheet .sg-l a{font-family:var(--font-body);font-size:15px;font-weight:600;padding:8px 14px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
 </style>
 </head>
 <body data-k="" monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.22">
@@ -2360,7 +2394,7 @@ app.addEventListener('change',e=>{
 
 function nailsHTML(){
   const p=state.profile;
-  return '<div class="world" data-w="nails">'+
+  return '<div class="world" data-w="nails"><div class="nview" data-v="inicio">'+
   '<section class="hero" id="topo-nl"><div><h1 class="serif">Julia Ruth <em>Nails.</em></h1><p class="lead">Nail art autoral, do delicado ao temático. Cada set pensado para quem vai usar.</p>'+
    '<div class="row"><button class="btn" data-act="go" data-target="monte">Montar meu set</button><button class="btn ghost" data-act="go" data-target="estilos">Ver estilos</button></div></div>'+
    '<div class="hero-art"><div class="frame f2 arch-hero" style="width:62%;aspect-ratio:3/4.3;right:auto;left:19%;top:0">'+slot('nl-hero','Sua unha, sua história',2)+'</div>'+
@@ -2369,21 +2403,28 @@ function nailsHTML(){
   '<section class="wrap" id="estilos"><div class="head"><div><h2 class="serif">Estilos que <em>eu amo</em> fazer</h2><p class="sub">Toque em qualquer set para ver de perto.</p></div>'+chips('nl',NL_CATS)+'</div><div class="grid arches" id="grid-nl">'+gridHTML('nl')+'</div></section>'+
   '<section class="wrap tight" id="antes-depois"><div class="head"><div><h2 class="serif">Antes e <em>depois</em></h2><p class="sub">Arraste para comparar.</p></div></div>'+
    '<div class="ba"><div class="ba-a">'+slot('nl-after','Depois',2)+'</div><div class="ba-b">'+slot('nl-before','Antes',3)+'</div><span class="ba-line"></span><span class="ba-knob" aria-hidden="true">↔</span><input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois"><span class="ba-tag l">Antes</span><span class="ba-tag r">Depois</span></div></section>'+
+  '</div><div class="nview" data-v="criar">'+
   '<section class="wrap tight" id="monte"><div class="head"><div><h2 class="serif">Monte o <em>seu set</em></h2><p class="sub">Envie fotos de inspiração, recorte a unha de cada dedo e veja tudo montado na mão modelo.</p></div></div>'+
    sbBuilderHTML()+'</section>'+
-  priceHTML()+nlExtrasHTML()+ '<section class="wrap tight" id="duvidas-nl"><div class="split"><div class="stick"><h2 class="serif">Dúvidas <em>comuns</em></h2></div>'+acc(FAQ_NL)+'</div></section>'+
+  nlExtrasHTML()+ '<section class="wrap tight" id="duvidas-nl"><div class="split"><div class="stick"><h2 class="serif">Dúvidas <em>comuns</em></h2></div>'+acc(FAQ_NL)+'</div></section>'+
+  '</div><div class="nview" data-v="agendar">'+
   '<section class="wrap tight" id="agendar"><div class="contact"><div><h2 class="serif">Bora <em>agendar?</em></h2><p class="sub">Me chame no WhatsApp com a sua referência e escolhemos o melhor horário.</p></div><div class="links-col" style="margin-top:0"><a href="'+wa('Olá, '+p.name+'! Quero agendar unhas.')+'" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>'+(p.igNails?'<a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram @'+esc(p.igNails.replace(/^@/,''))+'</a>':'')+'</div></div></section>'+
   '<section class="wrap tight"><div class="portal"><p>Tem um negócio? Vamos colocar a sua marca no digital.</p><button class="btn" data-act="mode" data-mode="marketing">Conhecer o marketing</button></div></section>'+
-  '</div>';
+  '</div></div>';
 }
 
 /* ---------- navegação ---------- */
 function navHTML(){
   const mk=[['sobre','Sobre'],['servicos','Serviços'],['portfolio','Portfólio'],['processo','Processo'],['diagnostico','Diagnóstico'],['contato','Contato']];
-  const nl=[['sobre-nl','Sobre'],['estilos','Estilos'],['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['precos','Preços'],['cuidados','Cuidados'],['como-chegar','Como chegar'],['agendar','Agendar']];
+  const NG=[
+   {v:'inicio',t:'Início',i:[['sobre-nl','Sobre mim'],['estilos','Estilos'],['antes-depois','Antes e depois']]},
+   {v:'criar',t:'Criar',i:[['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora']]},
+   {v:'valores',t:'Valores',i:[['precos','Catálogo de preços'],['preco-nail-art','Preço da nail art']]},
+   {v:'info',t:'Informações',i:[['primeira-vez','Primeira vez'],['cuidados','Cuidados'],['como-chegar','Como chegar'],['duvidas-nl','Dúvidas']]},
+   {v:'agendar',t:'Agendar',i:[['agendar','Agendar']]}];
   const L=(arr,w)=>'<span data-w="'+w+'" style="display:contents">'+arr.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span>';
-  const linksTop='<nav class="links" aria-label="Seções">'+L(mk,'marketing')+L(nl,'nails')+'</nav>';
-  const sheet='<div class="sheet" id="sheet"><button class="x" data-act="menu" aria-label="Fechar menu">×</button><span data-w="marketing" style="display:contents">'+mk.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span><span data-w="nails" style="display:contents">'+nl.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span></div>';
+  const linksTop='<nav class="links" aria-label="Seções">'+L(mk,'marketing')+'<span data-w="nails" style="display:contents">'+ngTop(NG)+'</span>'+'</nav>';
+  const sheet='<div class="sheet" id="sheet"><button class="x" data-act="menu" aria-label="Fechar menu">×</button><span data-w="marketing" style="display:contents">'+mk.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span><span data-w="nails" style="display:contents">'+ngSheet(NG)+'</span></div>';
   return '<div class="prog" id="prog"></div><header class="nav" id="nav"><button class="logo" data-act="top" aria-label="Voltar ao topo">'+esc(state.profile.name)+STAR+'</button>'+linksTop+
    '<div class="switch" role="tablist" aria-label="Escolha a área"><span class="thumb"></span><button role="tab" data-act="mode" data-mode="marketing">Marketing</button><button role="tab" data-act="mode" data-mode="nails">Unhas</button></div>'+
    '<a class="btn sm" href="'+wa()+'" target="_blank" rel="noopener">WhatsApp</a><button class="burger" data-act="menu" aria-label="Abrir menu" aria-expanded="false"><span></span></button></header>'+sheet;
@@ -2395,7 +2436,7 @@ function lightboxHTML(){
 
 function render(){
   const y=window.scrollY;
-  document.documentElement.dataset.mode=mode;
+  document.documentElement.dataset.mode=mode; document.documentElement.dataset.nv=nv;
   app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>';
   document.body.classList.toggle('editing',editing);
   if(ART) mountEditBar();
@@ -2468,8 +2509,10 @@ function nlAboutHTML(){
 function nlExtrasHTML(){
  const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(NL_LOC.addr);
  return '<section class="wrap tight" id="match"><div class="quiz"><div><h2 class="serif">Descubra o seu <em>match</em></h2><p class="sub">Responda três perguntas e veja o que combina com você.</p></div><div class="qbox" id="mq-box">'+mqHTML()+'</div></div></section>'+
-  '<section class="wrap tight" id="preco-nail-art"><div class="head"><div><h2 class="serif">Como escolho o preço da <em>nail art</em></h2><p class="sub">Entenda o que influencia o valor da sua arte.</p></div></div><div class="price-grid">'+NL_PRECO_ART.map(x=>'<div class="price-card">'+slot(x.id,x.t,2)+'<h3 class="serif" style="margin-top:14px">'+esc(x.t)+'</h3><p>'+esc(x.d)+'</p></div>').join('')+'</div></section>'+
   calcHTML()+
+  '</div><div class="nview" data-v="valores">'+priceHTML()+
+  '<section class="wrap tight" id="preco-nail-art"><div class="head"><div><h2 class="serif">Como escolho o preço da <em>nail art</em></h2><p class="sub">Entenda o que influencia o valor da sua arte.</p></div></div><div class="price-grid">'+NL_PRECO_ART.map(x=>'<div class="price-card">'+slot(x.id,x.t,2)+'<h3 class="serif" style="margin-top:14px">'+esc(x.t)+'</h3><p>'+esc(x.d)+'</p></div>').join('')+'</div></section>'+
+  '</div><div class="nview" data-v="info">'+
   '<section class="wrap tight" id="primeira-vez"><div class="split"><div class="stick"><h2 class="serif">Primeira <em>vez</em> aqui?</h2></div>'+acc(NL_PRIMEIRA)+'</div></section>'+
   '<section class="wrap tight" id="cuidados"><div class="split"><div class="stick"><h2 class="serif"><em>Cuidados</em> com as unhas</h2></div>'+acc(NL_CUIDADOS)+'</div></section>'+
   '<section class="wrap tight" id="como-chegar"><div class="contact"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.ref)+'<br>'+esc(NL_LOC.hours)+'</p></div><div class="links-col" style="margin-top:0"><a href="'+maps+'" target="_blank" rel="noopener">Abrir no Google Maps</a><a href="https://waze.com/ul?q='+encodeURIComponent(NL_LOC.addr)+'" target="_blank" rel="noopener">Abrir no Waze</a></div></div></section>';
@@ -2485,11 +2528,23 @@ app.addEventListener('click',e=>{
 app.addEventListener('input',e=>{ if(e.target.closest('#calc')) calcUpdate(); });
 app.addEventListener('change',e=>{ if(e.target.closest('#calc')) calcUpdate(); });
 
+/* ---------- páginas e menu das Unhas ---------- */
+let nv='inicio';
+function setNV(v){ nv=v; document.documentElement.dataset.nv=v; }
+const ngLinks=g=>g.i.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('');
+function ngTop(NG){ return NG.map(g=>'<div class="ng"><button class="ng-b'+(g.i.length>1?' has':'')+'" data-act="nv" data-v="'+g.v+'">'+g.t+'</button>'+(g.i.length>1?'<div class="ng-m">'+ngLinks(g)+'</div>':'')+'</div>').join(''); }
+function ngSheet(NG){ return NG.map(g=>'<div class="sg"><button data-act="nv" data-v="'+g.v+'">'+g.t+'</button>'+(g.i.length>1?'<div class="sg-l">'+ngLinks(g)+'</div>':'')+'</div>').join(''); }
+app.addEventListener('click',e=>{
+ const a=e.target.closest('[data-act="nv"]'); if(!a) return;
+ const s=$('#sheet'); if(s) s.classList.remove('open');
+ setNV(a.dataset.v); window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+});
+
 let toastT;
 
 function toast(m){ const t=$('#toast'); if(!t) return; t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3200); }
 
-function scrollToId(id){ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }
+function scrollToId(id){ const el=document.getElementById(id); if(!el) return; const nvw=el.closest('.nview'); if(nvw&&nvw.dataset.v!==nv) setNV(nvw.dataset.v); el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }
 
 function setMode(m,after){
   if(m===mode){ if(after) after(); return; }
