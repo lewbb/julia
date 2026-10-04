@@ -213,7 +213,7 @@ function marketingHTML(){
    '<div class="field"><label for="cf-msg">Conte um pouco sobre a sua marca</label><textarea id="cf-msg" placeholder="Quem você é, o que vende e onde quer chegar."></textarea></div>'+
    '<button class="btn" data-act="send">Enviar pelo WhatsApp</button></div></div></section>'+
   '<section class="wrap tight"><div class="portal"><p>Também cuido das unhas. Vem conhecer?</p><button class="btn" data-act="mode" data-mode="nails">Ver unhas</button></div></section>'+
-  X('m-contato')+'</div></div>';
+  X('m-contato')+'</div><div class="nview" data-v="m-avaliacoes"><section class="wrap tight" id="depoimentos-mk"><div class="head"><div><h2 class="serif">O que <em>dizem</em> por aí</h2><p class="sub">Veja o que dizem sobre o trabalho de marketing e conte como foi trabalhar com a Julia.</p></div></div><div id="avaliar-root-mk"></div></section></div></div>';
 }
 
 function stepperHTML(){
@@ -479,7 +479,7 @@ function reorg(){
  const sec=id=>{const e=id==='#agenda-root'?document.querySelector(id):document.getElementById(id); return e?(e.tagName==='SECTION'?e:e.closest('section')||e):null;};
  const mv=(ancora,ids)=>{ let at=sec(ancora); if(!at) return; ids.forEach(id=>{const s=sec(id); if(s&&s!==at){ at.after(s); at=s; }}); };
  mv('como-funciona-home',['monte','agendar','#agenda-root','match','calculadora','depoimentos-nl','primeira-vez','cuidados']);
- mv('para-quem',['servicos','depoimentos-mk','prazos','diagnostico']);
+ mv('para-quem',['servicos','prazos','diagnostico']);
 }
 function nlHomeHTML(){
   const st=[['01','Escolha o estilo','Veja os sets, monte o seu ou envie uma inspiração.','💅'],['02','Reserve o horário','Escolha dia e hora livres direto no site.','🗓️'],['03','Curta o resultado','Atendimento com cuidado, higiene e acabamento delicado.','✨']];
@@ -512,10 +512,11 @@ function nailsHTML(){
 /* ---------- navegação ---------- */
 function navHTML(){
   const MG=[
-   {v:'m-inicio',t:'Início',i:[['topo-mk','Apresentação'],['sobre','Sobre mim'],['para-quem','Para quem é'],['depoimentos-mk','Depoimentos']]},
+   {v:'m-inicio',t:'Início',i:[['topo-mk','Apresentação'],['sobre','Sobre mim'],['para-quem','Para quem é']]},
    {v:'m-servicos',t:'Serviços',i:[['servicos','O que eu faço'],['pacotes','Pacotes']]},
    {v:'m-portfolio',t:'Portfólio',i:[['portfolio','Trabalhos'],['redes-mk','Redes sociais']]},
    {v:'m-processo',t:'Processo',i:[['processo','Como funciona'],['diagnostico','Descubra seu pacote'],['duvidas-mk','Dúvidas'],['briefing','O que preciso de você']]},
+   {v:'m-avaliacoes',t:'Avaliações',i:[['depoimentos-mk','Avaliar a Julia']]},
    {v:'m-contato',t:'Contato',i:[['contato','Fale comigo'],['prazos','Prazos e pagamento']]}];
   const NG=[
    {v:'inicio',t:'Início',i:[['sobre-nl','Sobre mim'],['estilos','Estilos'],['antes-depois','Antes e depois'],['porque-nl','Por que escolher'],['depoimentos-nl','Depoimentos']]},
@@ -550,7 +551,7 @@ function render(){
 /* ---------- ações ---------- */
 
 /* ---------- novidades Unhas (sem banco) ---------- */
-const NL_LOC={addr:'[ENDEREÇO DO ATENDIMENTO]',ref:'[Ponto de referência]',hours:'Segunda a sábado, das 9h às 18h, com horário marcado'};
+const NL_LOC={name:'Julia Ruth Nails',addr:'R. Ouro Branco, 408',city:'Carambeí - PR, 84145-000',hours:'Segunda a sábado, das 13h às 18h, com horário marcado. Domingo fechado.'};
 const NL_PRIMEIRA=[
  {t:'Como é o primeiro atendimento?',p:'Começamos com uma conversa sobre o que você imagina e olhamos as suas referências. Escolhemos juntas o formato, o comprimento e a arte. Depois faço o procedimento com calma e, no final, explico os cuidados e quando fazer a manutenção.'},
  {t:'O que levar?',p:'Fotos de referência, se tiver. Se possível, venha sem esmalte nas unhas e me conte como é a sua rotina, para escolhermos algo que combine com você.'},
@@ -608,10 +609,10 @@ function calcUpdate(){
  $('#calc-wa').href=wa(it.length?'Olá, '+state.profile.name+'! Simulei no site: '+it.join(', ')+'. Total estimado: '+brl(v)+'.':'');
 }
 function nlAboutHTML(){
- return '<section class="wrap tight" id="sobre-nl"><div class="about"><div class="portrait">'+slot('nl-about','Foto da '+state.profile.name,1)+'</div><div><h2 class="serif">Oi, eu sou a <em>'+esc(state.profile.name.split(' ')[0])+'</em></h2><p class="sub">Faço nail art autoral para quem gosta de unhas bonitas sem abrir mão da saúde da unha natural. Cada atendimento é com hora marcada, com calma e atenção aos detalhes, e a gente conversa sobre a sua referência antes de começar.</p></div></div></section>';
+ return '<section class="wrap tight" id="sobre-nl"><div class="about"><div class="portrait">'+slot('nl-about','Foto da '+state.profile.name,1)+'</div><div><h2 class="serif">Sobre <em>mim</em></h2><p class="sub">Eu sou a Julia Ruth, Nail Artist e apaixonada por tudo que envolve unhas. 💅🏻</p><p class="sub" style="margin-top:14px">Pra mim, unha bonita vai muito além de uma esmaltação: é técnica, acabamento, cuidado e, claro, criatividade. Estou sempre estudando, testando técnicas e buscando entregar um trabalho bem feito em cada detalhe.</p><p class="sub" style="margin-top:14px">E tem um detalhe importante sobre mim: também sou mãe. Por isso, hoje não faço atendimentos pela manhã — escolhi organizar minha agenda de um jeito que funcione para mim, para meu filho e para o meu trabalho. 🤍</p></div></div></section>';
 }
 function nlExtrasHTML(){
- const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(NL_LOC.addr);
+ const full=NL_LOC.addr+', '+NL_LOC.city, q=encodeURIComponent(full), embed='https://www.google.com/maps?q='+q+'&z=17&output=embed', rota='https://www.google.com/maps/dir/?api=1&destination='+q, waze='https://waze.com/ul?q='+q+'&navigate=yes', lc=(t,d)=>'<div class="price-card"><h3 class="serif" style="margin:0 0 8px">'+t+'</h3><p style="margin:0">'+d+'</p></div>';
  return '<section class="wrap tight" id="match"><div class="quiz"><div><h2 class="serif">Descubra o seu <em>match</em></h2><p class="sub">Responda três perguntas e veja o que combina com você.</p></div><div class="qbox" id="mq-box">'+mqHTML()+'</div></div></section>'+
   calcHTML()+
   X('criar')+'</div><div class="nview" data-v="valores">'+priceHTML()+
@@ -619,7 +620,10 @@ function nlExtrasHTML(){
   X('valores')+'</div><div class="nview" data-v="info">'+
   '<section class="wrap tight" id="primeira-vez"><div class="split"><div class="stick"><h2 class="serif">Primeira <em>vez</em> aqui?</h2></div>'+acc(NL_PRIMEIRA)+'</div></section>'+
   '<section class="wrap tight" id="cuidados"><div class="split"><div class="stick"><h2 class="serif"><em>Cuidados</em> com as unhas</h2></div>'+acc(NL_CUIDADOS)+'</div></section>'+
-  '<section class="wrap tight" id="como-chegar"><div class="contact"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.ref)+'<br>'+esc(NL_LOC.hours)+'</p></div><div class="links-col" style="margin-top:0"><a href="'+maps+'" target="_blank" rel="noopener">Abrir no Google Maps</a><a href="https://waze.com/ul?q='+encodeURIComponent(NL_LOC.addr)+'" target="_blank" rel="noopener">Abrir no Waze</a></div></div></section>';
+  '<section class="wrap tight" id="como-chegar"><div class="head"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(NL_LOC.name)+'</p></div></div>'+
+  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">'+lc('Endereço',esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.city))+lc('Estacionamento','Consulte pelo WhatsApp')+lc('Pontos de referência','Consulte pelo WhatsApp')+lc('Horários de atendimento',esc(NL_LOC.hours))+'</div>'+
+  '<div style="margin-top:16px;border-radius:24px;overflow:hidden;border:1px solid var(--accent-soft)"><iframe title="Mapa: '+esc(full)+'" src="'+embed+'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen style="display:block;width:100%;height:380px;border:0"></iframe></div>'+
+  '<p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="btn" href="'+rota+'" target="_blank" rel="noopener">Como chegar</a><a class="btn ghost" href="'+waze+'" target="_blank" rel="noopener">Abrir no Waze</a></p></section>';
 }
 app.addEventListener('click',e=>{
  const a=e.target.closest('[data-act^="mq-"]'); if(!a) return; const act=a.dataset.act, n=MQ[mq.k].qs.length;
@@ -659,8 +663,8 @@ const EXTRA={
  'm-inicio':()=>cardsHTML('para-quem','Para quem é o <em>meu trabalho</em>','Se você se identifica com algum destes perfis, podemos conversar.',[
    {t:'Quem está começando',d:'Você tem um negócio ou serviço e quer aparecer nas redes com cara de marca, sem se perder.'},
    {t:'Quem já posta',d:'Seu perfil existe, mas falta constância, identidade ou clareza do que comunicar.'},
-   {t:'Quem quer vender mais',d:'Você precisa que o conteúdo fale com o público certo e leve a pessoa até o seu contato.'}])+
-  '<section class="wrap tight" id="depoimentos-mk"><div class="head"><div><h2 class="serif">O que <em>dizem</em> por aí</h2><p class="sub">Conte como foi trabalhar com a Julia.</p></div></div><div id="avaliar-root-mk"></div></section>',
+   {t:'Quem quer vender mais',d:'Você precisa que o conteúdo fale com o público certo e leve a pessoa até o seu contato.'}]),
+
  'm-servicos':()=>cardsHTML('pacotes','Pacotes e <em>formatos</em>','Escolha o caminho que combina com o momento da sua marca.',PACKS.map(p=>({t:p.n,d:p.d,cta:'Olá, '+state.profile.name+'! Tenho interesse em: '+p.n+'.',b:'Quero esse pacote'}))),
  'm-portfolio':()=>cardsHTML('redes-mk','Acompanhe nas <em>redes</em>','Mais trabalhos e bastidores no Instagram.',[
    {t:'Instagram',d:'Novos projetos, bastidores e dicas de conteúdo.',href:igUrl(state.profile.igMarketing),b:'Ver @'+state.profile.igMarketing.replace(/^@/,'')},
