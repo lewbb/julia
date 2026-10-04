@@ -517,7 +517,7 @@ function navHTML(){
    {v:'m-portfolio',t:'Portfólio',i:[['portfolio','Trabalhos'],['redes-mk','Redes sociais']]},
    {v:'m-processo',t:'Processo',i:[['processo','Como funciona'],['diagnostico','Descubra seu pacote'],['duvidas-mk','Dúvidas'],['briefing','O que preciso de você']]},
    {v:'m-avaliacoes',t:'Avaliações',i:[['depoimentos-mk','Avaliar a Julia']]},
-   {v:'m-contato',t:'Contato',i:[['contato','Fale comigo'],['prazos','Prazos e pagamento']]}];
+   {v:'m-contato',t:'Contato',i:[['contato','Fale comigo'],['prazos','Prazos e pagamento'],['como-chegar-mk','Como chegar']]}];
   const NG=[
    {v:'inicio',t:'Início',i:[['sobre-nl','Sobre mim'],['estilos','Estilos'],['antes-depois','Antes e depois'],['porque-nl','Por que escolher'],['depoimentos-nl','Depoimentos']]},
    {v:'criar',t:'Criar',i:[['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['ocasioes','Unhas por ocasião'],['sugestoes','Sugerir compra']]},
@@ -611,8 +611,14 @@ function calcUpdate(){
 function nlAboutHTML(){
  return '<section class="wrap tight" id="sobre-nl"><div class="about"><div class="portrait">'+slot('nl-about','Foto da '+state.profile.name,1)+'</div><div><h2 class="serif">Sobre <em>mim</em></h2><p class="sub">Eu sou a Julia Ruth, Nail Artist e apaixonada por tudo que envolve unhas. 💅🏻</p><p class="sub" style="margin-top:14px">Pra mim, unha bonita vai muito além de uma esmaltação: é técnica, acabamento, cuidado e, claro, criatividade. Estou sempre estudando, testando técnicas e buscando entregar um trabalho bem feito em cada detalhe.</p><p class="sub" style="margin-top:14px">E tem um detalhe importante sobre mim: também sou mãe. Por isso, hoje não faço atendimentos pela manhã — escolhi organizar minha agenda de um jeito que funcione para mim, para meu filho e para o meu trabalho. 🤍</p></div></div></section>';
 }
-function nlExtrasHTML(){
+function comoChegarHTML(id){
  const full=NL_LOC.addr+', '+NL_LOC.city, q=encodeURIComponent(full), embed='https://www.google.com/maps?q='+q+'&z=17&output=embed', rota='https://www.google.com/maps/dir/?api=1&destination='+q, waze='https://waze.com/ul?q='+q+'&navigate=yes', lc=(t,d)=>'<div class="price-card"><h3 class="serif" style="margin:0 0 8px">'+t+'</h3><p style="margin:0">'+d+'</p></div>';
+ return '<section class="wrap tight" id="'+id+'"><div class="head"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(id==='como-chegar-mk'?state.profile.name:NL_LOC.name)+'</p></div></div>'+
+  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">'+lc('Endereço',esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.city))+lc('Estacionamento','Não temos um privado')+lc('Pontos de referência','Cartório')+lc('Horários de atendimento',esc(NL_LOC.hours))+'</div>'+
+  '<div style="margin-top:16px;border-radius:24px;overflow:hidden;border:1px solid var(--accent-soft)"><iframe title="Mapa: '+esc(full)+'" src="'+embed+'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen style="display:block;width:100%;height:380px;border:0"></iframe></div>'+
+  '<p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="btn" href="'+rota+'" target="_blank" rel="noopener">Como chegar</a><a class="btn ghost" href="'+waze+'" target="_blank" rel="noopener">Abrir no Waze</a></p></section>';
+}
+function nlExtrasHTML(){
  return '<section class="wrap tight" id="match"><div class="quiz"><div><h2 class="serif">Descubra o seu <em>match</em></h2><p class="sub">Responda três perguntas e veja o que combina com você.</p></div><div class="qbox" id="mq-box">'+mqHTML()+'</div></div></section>'+
   calcHTML()+
   X('criar')+'</div><div class="nview" data-v="valores">'+priceHTML()+
@@ -620,10 +626,7 @@ function nlExtrasHTML(){
   X('valores')+'</div><div class="nview" data-v="info">'+
   '<section class="wrap tight" id="primeira-vez"><div class="split"><div class="stick"><h2 class="serif">Primeira <em>vez</em> aqui?</h2></div>'+acc(NL_PRIMEIRA)+'</div></section>'+
   '<section class="wrap tight" id="cuidados"><div class="split"><div class="stick"><h2 class="serif"><em>Cuidados</em> com as unhas</h2></div>'+acc(NL_CUIDADOS)+'</div></section>'+
-  '<section class="wrap tight" id="como-chegar"><div class="head"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(NL_LOC.name)+'</p></div></div>'+
-  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">'+lc('Endereço',esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.city))+lc('Estacionamento','Não temos um privado')+lc('Pontos de referência','Cartório')+lc('Horários de atendimento',esc(NL_LOC.hours))+'</div>'+
-  '<div style="margin-top:16px;border-radius:24px;overflow:hidden;border:1px solid var(--accent-soft)"><iframe title="Mapa: '+esc(full)+'" src="'+embed+'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen style="display:block;width:100%;height:380px;border:0"></iframe></div>'+
-  '<p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="btn" href="'+rota+'" target="_blank" rel="noopener">Como chegar</a><a class="btn ghost" href="'+waze+'" target="_blank" rel="noopener">Abrir no Waze</a></p></section>';
+  comoChegarHTML('como-chegar');
 }
 app.addEventListener('click',e=>{
  const a=e.target.closest('[data-act^="mq-"]'); if(!a) return; const act=a.dataset.act, n=MQ[mq.k].qs.length;
@@ -677,7 +680,7 @@ const EXTRA={
  'm-contato':()=>cardsHTML('prazos','Prazos, pagamento e <em>revisões</em>','',[
    {t:'Prazos',d:'O prazo depende do tipo e do tamanho do projeto. Depois de entender o que você precisa, eu informo a data de entrega antes de começarmos.'},
    {t:'Pagamento',d:'A forma de pagamento e o valor de entrada são combinados antes de começar, de maneira clara e por escrito.'},
-   {t:'Revisões',d:'Os ajustes fazem parte do processo: você acompanha, pede as mudanças necessárias e aprova antes da entrega final.'}]),
+   {t:'Revisões',d:'Os ajustes fazem parte do processo: você acompanha, pede as mudanças necessárias e aprova antes da entrega final.'}])+comoChegarHTML('como-chegar-mk'),
  'inicio':()=>cardsHTML('porque-nl','Por que <em>escolher</em> a Julia','',[
    {t:'Feito para você',d:'Cada set é pensado para o seu estilo, a sua rotina e a saúde da sua unha.'},
    {t:'Autoral de verdade',d:'Do delicado ao temático, a arte nasce da sua referência e ganha o meu toque.'},
