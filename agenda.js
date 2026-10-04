@@ -1,7 +1,7 @@
 /* Calendário de agendamento (página Agendar) */
 (function(){
 'use strict';
-const AG={ini:13*60,fim:18*60,passo:30,fechados:[0],meses:3}; /* 0 = domingo fechado; ajuste aqui */
+const AG={ini:13*60,fim:18*60,passo:30,fechados:[0],meses:3}; /* 0 = domingo fechado; ini/fim = primeiro e ÚLTIMO horário de início oferecido; ajuste aqui */
 const MES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const S={serv:[],ocup:[],bloq:[],d:'',h:'',sv:'',nome:'',tel:'',obs:'',cm:(function(){const d=new Date();d.setDate(1);return d;})(),err:'',done:false,link:''};
 let root=null,loaded=false;
@@ -17,7 +17,7 @@ const dur=()=>svc().duracao_min||90;
 const busy=(d,a,b)=>S.ocup.map(o=>[o.data,toMin(o.horario),toMin(o.horario)+(o.duracao_min||90)]).concat(S.bloq.map(o=>[o.data,toMin(o.inicio),toMin(o.fim)])).some(x=>x[0]===d&&a<x[2]&&x[1]<b);
 function livres(){
   if(!S.d) return []; const du=dur(), n=new Date(), agora=n.getHours()*60+n.getMinutes(), hj=S.d===hoje(), l=[];
-  for(let m=AG.ini;m+du<=AG.fim;m+=AG.passo) if(!busy(S.d,m,m+du)&&!(hj&&m<=agora)) l.push(fmtH(m));
+  for(let m=AG.ini;m<=AG.fim;m+=AG.passo) if(!busy(S.d,m,m+du)&&!(hj&&m<=agora)) l.push(fmtH(m));
   return l;
 }
 function cal(){

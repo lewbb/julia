@@ -198,7 +198,7 @@ function drawSlots(){
   const box=$('#cl-slots'); if(!box) return;
   if(!U.dtSel){ box.innerHTML='<small>Escolha a data no calendário.</small>'; return; }
   const du=durSel(), n=new Date(), agora=n.getHours()*60+n.getMinutes(), hj=U.dtSel===hoje(), l=[];
-  for(let m=AG.ini;m+du<=AG.fim;m+=AG.passo){ const f=m+du, oc=U.ocup.some(o=>m<toMin(o.inicio)+o.dur&&toMin(o.inicio)<f); if(!oc&&!(hj&&m<=agora)) l.push(fmtH(m)); }
+  for(let m=AG.ini;m<=AG.fim;m+=AG.passo){ const f=m+du, oc=U.ocup.some(o=>m<toMin(o.inicio)+o.dur&&toMin(o.inicio)<f); if(!oc&&!(hj&&m<=agora)) l.push(fmtH(m)); }
   if(l.indexOf(U.horaSel)<0) U.horaSel='';
   box.innerHTML=l.length?l.map(h=>'<button type="button" class="chip" data-cl="slot" data-v="'+h+'" aria-pressed="'+(h===U.horaSel)+'">'+h+'</button>').join(''):'<small>Sem horários livres neste dia. Tente outra data.</small>';
 }
