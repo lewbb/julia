@@ -486,6 +486,7 @@ function nlHomeHTML(){
   return '<section class="wrap tight" id="como-funciona-home"><div class="head"><div><h2 class="serif">Do pedido ao <em>resultado</em></h2><p class="sub">Simples, em três passos.</p></div></div><div class="hv">'+st.map(x=>'<div class="hv-card"><span class="ic" aria-hidden="true">'+x[3]+'</span><b class="n">'+x[0]+'</b><h3>'+x[1]+'</h3><p>'+x[2]+'</p></div>').join('')+'</div>'+
   '</section>';
 }
+function perfilHTML(){ return '<div class="nview" data-v="perfil"><section class="wrap tight" id="perfil"><div class="head"><div><h2 class="serif">Meu <em>perfil</em></h2><p class="sub">Seus horários, desejos e avaliações.</p></div></div><div id="perfil-root"></div></section></div>'; }
 function nailsHTML(){
   const p=state.profile;
   return '<div class="world" data-w="nails"><div class="nview" data-v="inicio">'+
@@ -524,10 +525,10 @@ function navHTML(){
    {v:'agendar',t:'Agendar',i:[['agendar','Agendar'],['agendar-passos','Como agendar']]}];
   const L=(arr,w)=>'<span data-w="'+w+'" style="display:contents">'+arr.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span>';
   const linksTop='<nav class="links" aria-label="Seções">'+'<span data-w="marketing" style="display:contents">'+ngTop(MG)+'</span>'+'<span data-w="nails" style="display:contents">'+ngTop(NG)+'</span>'+'</nav>';
-  const sheet='<div class="sheet" id="sheet"><button class="x" data-act="menu" aria-label="Fechar menu">×</button><span data-w="marketing" style="display:contents">'+ngSheet(MG)+'</span><span data-w="nails" style="display:contents">'+ngSheet(NG)+'</span></div>';
+  const sheet='<div class="sheet" id="sheet"><button class="x" data-act="menu" aria-label="Fechar menu">×</button><div class="sg sg-perfil"><button data-act="perfil">Meu perfil</button></div><span data-w="marketing" style="display:contents">'+ngSheet(MG)+'</span><span data-w="nails" style="display:contents">'+ngSheet(NG)+'</span></div>';
   return '<div class="prog" id="prog"></div><header class="nav" id="nav"><button class="logo" data-act="top" aria-label="Voltar ao topo">'+esc(state.profile.name)+STAR+'</button>'+linksTop+
    '<div class="switch" role="tablist" aria-label="Escolha a área"><span class="thumb"></span><button role="tab" data-act="mode" data-mode="marketing">Marketing</button><button role="tab" data-act="mode" data-mode="nails">Unhas</button></div>'+
-   '<button class="burger" data-act="menu" aria-label="Abrir menu" aria-expanded="false"><span></span></button></header>'+sheet;
+   '<button class="nav-av" id="nav-perfil" data-act="perfil" aria-label="Meu perfil"></button>'+'<button class="burger" data-act="menu" aria-label="Abrir menu" aria-expanded="false"><span></span></button></header>'+sheet;
 }
 
 function lightboxHTML(){
@@ -537,7 +538,7 @@ function lightboxHTML(){
 function render(){
   const y=window.scrollY;
   document.documentElement.dataset.mode=mode; document.documentElement.dataset.nv=nv;
-  app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>'+'<div class="fabs"><button class="fab" data-act="go" data-target="agendar">Agendar ✦</button><a class="wa-fab" href="'+wa()+'" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7a11 11 0 0 1-4.5-3.9c-.4-.5-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.4.1.2.1.8-.1 1.4z"/></svg></a></div>';
+  app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+perfilHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>'+'<div class="fabs"><button class="fab" data-act="go" data-target="agendar">Agendar ✦</button><a class="wa-fab" href="'+wa()+'" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7a11 11 0 0 1-4.5-3.9c-.4-.5-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.4.1.2.1.8-.1 1.4z"/></svg></a></div>';
   document.body.classList.toggle('editing',editing);
   if(ART) mountEditBar();
   reorg();
@@ -633,7 +634,7 @@ app.addEventListener('change',e=>{ if(e.target.closest('#calc')) calcUpdate(); }
 
 /* ---------- páginas e menu das Unhas ---------- */
 let nv='m-inicio'; const nvLast={marketing:'m-inicio',nails:'inicio'};
-function setNV(v){ nv=v; nvLast[v.indexOf('m-')===0?'marketing':'nails']=v; document.documentElement.dataset.nv=v; }
+function setNV(v){ nv=v; if(v!=='perfil'&&v!=='cliente') nvLast[v.indexOf('m-')===0?'marketing':'nails']=v; document.documentElement.dataset.nv=v; }
 const ngLinks=g=>g.i.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('');
 function ngTop(NG){ return NG.map(g=>'<div class="ng"><button class="ng-b'+(g.i.length>1?' has':'')+'" data-act="nv" data-v="'+g.v+'">'+g.t+'</button>'+(g.i.length>1?'<div class="ng-m">'+ngLinks(g)+'</div>':'')+'</div>').join(''); }
 function ngSheet(NG){ return NG.map(g=>'<div class="sg"><button data-act="nv" data-v="'+g.v+'">'+g.t+'</button>'+(g.i.length>1?'<div class="sg-l">'+ngLinks(g)+'</div>':'')+'</div>').join(''); }
@@ -677,7 +678,7 @@ const EXTRA={
    {t:'Feito para você',d:'Cada set é pensado para o seu estilo, a sua rotina e a saúde da sua unha.'},
    {t:'Autoral de verdade',d:'Do delicado ao temático, a arte nasce da sua referência e ganha o meu toque.'},
    {t:'Acabamento e durabilidade',d:'Técnica e produtos escolhidos para o resultado durar, com manutenção combinada.'}])+
-  cardsHTML('depoimentos-nl','Clientes <em>felizes</em>','',XT('[Nome da cliente ','[Escreva aqui o depoimento de uma cliente das unhas.]')),
+  '<section class="wrap tight" id="depoimentos-nl"><div class="head"><div><h2 class="serif">Clientes <em>felizes</em></h2><p class="sub">Conte como foi o seu atendimento.</p></div></div><div id="avaliar-root"></div></section>',
  'criar':()=>cardsHTML('ocasioes','Unhas por <em>ocasião</em>','Conte para onde vão as suas unhas e eu monto o set ideal.',
    ['Noiva e madrinhas','Festas e eventos','Viagens e férias','Trabalho e dia a dia','Temas especiais'].map(o=>({t:o,d:'Me envie a sua referência e combinamos cores, formato e arte.',cta:'Olá, '+state.profile.name+'! Quero unhas para: '+o+'.',b:'Quero para isso'}))),
  'valores':()=>accSec('duvidas-valores','Dúvidas sobre <em>valores</em>',[
@@ -727,7 +728,8 @@ function closeLB(){ const l=$('#lb'); if(l) l.classList.remove('open'); document
 app.addEventListener('click',e=>{
   const a=e.target.closest('[data-act]'); if(!a) return;
   const act=a.dataset.act;
-  if(act==='mode'){ setMode(a.dataset.mode); }
+  if(act==='mode'){ if(nv==='perfil'&&a.dataset.mode===mode){ setNV(nvLast[mode]); window.scrollTo(0,0); } else setMode(a.dataset.mode); }
+  else if(act==='perfil'){ closeDrawer(); setNV('perfil'); window.scrollTo(0,0); }
   else if(act==='go'){ $('#sheet').classList.remove('open'); scrollToId(a.dataset.target); }
   else if(act==='adm'){ setMode('nails',()=>{ setNV('cliente'); window.scrollTo(0,0); }); }
   else if(act==='goto'){ setMode(a.dataset.mode,()=>setTimeout(()=>scrollToId(a.dataset.target),60)); }
