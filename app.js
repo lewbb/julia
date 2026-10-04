@@ -176,7 +176,7 @@ function footer(){
    (p.igMarketing?'<li><a href="'+igUrl(p.igMarketing)+'" target="_blank" rel="noopener">Instagram de marketing: @'+esc(p.igMarketing.replace(/^@/,''))+'</a></li>':'')+
    (p.igNails?'<li><a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram de unhas: @'+esc(p.igNails.replace(/^@/,''))+'</a></li>':'')+
    '</ul></div></div>'+
-   '<div class="foot-bot"><span>© '+new Date().getFullYear()+' '+esc(p.name)+'. Todos os direitos reservados.</span><button data-act="top">Voltar ao topo</button></div></div></footer>';
+   '<div class="foot-bot"><span>© '+new Date().getFullYear()+' '+esc(p.name)+'. Todos os direitos reservados.</span><button data-act="top">Voltar ao topo</button><button data-act="adm" style="opacity:.45;font-size:.8rem">Área da Julia</button></div></div></footer>';
 }
 
 /* ---------- mundo: marketing ---------- */
@@ -486,8 +486,9 @@ function nailsHTML(){
   nlExtrasHTML()+ '<section class="wrap tight" id="duvidas-nl"><div class="split"><div class="stick"><h2 class="serif">Dúvidas <em>comuns</em></h2></div>'+acc(FAQ_NL)+'</div></section>'+
   X('info')+'</div><div class="nview" data-v="agendar">'+
   '<section class="wrap tight" id="agendar"><div class="contact"><div><h2 class="serif">Bora <em>agendar?</em></h2><p class="sub">Me chame no WhatsApp com a sua referência e escolhemos o melhor horário.</p></div><div class="links-col" style="margin-top:0"><a href="'+wa('Olá, '+p.name+'! Quero agendar unhas.')+'" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>'+(p.igNails?'<a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram @'+esc(p.igNails.replace(/^@/,''))+'</a>':'')+'</div></div></section>'+
+  '<section class="wrap tight"><div id="agenda-root"></div></section>'+
   '<section class="wrap tight"><div class="portal"><p>Tem um negócio? Vamos colocar a sua marca no digital.</p><button class="btn" data-act="mode" data-mode="marketing">Conhecer o marketing</button></div></section>'+
-  X('agendar')+'</div><div class="nview" data-v="cliente"><section class="wrap tight" id="cliente-area"><div class="head"><div><h2 class="serif">Minha <em>área</em></h2><p class="sub">Agenda, lista de desejos e avaliações.</p></div></div><div id="cliente-root"></div></section></div></div>';
+  X('agendar')+'</div><div class="nview" data-v="cliente"><section class="wrap tight" id="cliente-area"><div class="head"><div><h2 class="serif">Painel da <em>Julia</em></h2><p class="sub">Pedidos, valores, bloqueios e clientes.</p></div></div><div id="cliente-root"></div></section></div></div>';
 }
 
 /* ---------- navegação ---------- */
@@ -503,7 +504,6 @@ function navHTML(){
    {v:'criar',t:'Criar',i:[['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['ocasioes','Unhas por ocasião']]},
    {v:'valores',t:'Valores',i:[['precos','Catálogo de preços'],['preco-nail-art','Preço da nail art'],['duvidas-valores','Dúvidas sobre valores']]},
    {v:'info',t:'Informações',i:[['primeira-vez','Primeira vez'],['cuidados','Cuidados'],['como-chegar','Como chegar'],['duvidas-nl','Dúvidas'],['atendimento','Como é o atendimento'],['biosseguranca','Higiene e cuidados']]},
-   {v:'cliente',t:'Minha área',i:[['cliente-area','Entrar e agenda'],['avaliacoes-pub','Avaliações']]},
    {v:'agendar',t:'Agendar',i:[['agendar','Agendar'],['agendar-passos','Como agendar']]}];
   const L=(arr,w)=>'<span data-w="'+w+'" style="display:contents">'+arr.map(a=>'<a data-act="go" data-target="'+a[0]+'">'+a[1]+'</a>').join('')+'</span>';
   const linksTop='<nav class="links" aria-label="Seções">'+'<span data-w="marketing" style="display:contents">'+ngTop(MG)+'</span>'+'<span data-w="nails" style="display:contents">'+ngTop(NG)+'</span>'+'</nav>';
@@ -524,6 +524,7 @@ function render(){
   document.body.classList.toggle('editing',editing);
   if(ART) mountEditBar();
   if(window.ClienteUI) window.ClienteUI.mount($('#cliente-root'));
+  if(window.AgendaUI) window.AgendaUI.mount($('#agenda-root'));
   window.scrollTo(0,y);
 }
 
@@ -710,6 +711,7 @@ app.addEventListener('click',e=>{
   const act=a.dataset.act;
   if(act==='mode'){ setMode(a.dataset.mode); }
   else if(act==='go'){ $('#sheet').classList.remove('open'); scrollToId(a.dataset.target); }
+  else if(act==='adm'){ setMode('nails',()=>{ setNV('cliente'); window.scrollTo(0,0); }); }
   else if(act==='goto'){ setMode(a.dataset.mode,()=>setTimeout(()=>scrollToId(a.dataset.target),60)); }
   else if(act==='top'){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); }
   else if(act==='menu'){ const s=$('#sheet'); const o=!s.classList.contains('open'); s.classList.toggle('open',o); $('.burger').setAttribute('aria-expanded',o); }
