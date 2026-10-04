@@ -5,7 +5,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let S={}; try{S=JSON.parse($('#site-state').textContent)||{};}catch(e){}
 const CFG=S.supabase||{}, P=S.profile||{}, WA=String(P.whatsapp||'').replace(/\D/g,'');
-const AG={ini:9*60,fim:18*60,passo:30,fechados:[0],meses:3}; // atendimento 09h-18h, fechado aos domingos
+const AG={ini:13*60,fim:18*60,passo:30,fechados:[0],meses:3}; // atendimento 13h-18h, fechado aos domingos
 const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const ready=!!(CFG.url&&CFG.key&&window.supabase);
 const U={sb:null,user:null,perfil:null,tab:'agenda',auth:'entrar',servicos:[],aval:[],ag:[],de:[],av:[],aAg:[],aAv:[],msg:'',link:'',cal:new Date(new Date().getFullYear(),new Date().getMonth(),1),dtSel:'',horaSel:'',ocup:[],sub:'ped',fil:'pendente',mes:'',bq:[],aCl:[],pt:'agenda',avf:{unhas:{n:0,nome:null,com:'',done:false,msg:''},marketing:{n:0,nome:null,com:'',done:false,msg:''}},sg:{nome:null,txt:'',link:'',done:false,msg:''},aSg:[]};
@@ -101,7 +101,7 @@ function tabAdmin(){
     const L=(window.JRImg?window.JRImg.slots():[]);
     b='<p class="sub" style="margin-bottom:14px">Escolha uma foto para trocar. Ela aparece no site na hora, para todo mundo.</p>'+L.map(x=>'<div class="cl-row"><div style="display:flex;gap:12px;align-items:center">'+(x.url?'<img src="'+esc(x.url)+'" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:12px">':'<div style="width:56px;height:56px;border-radius:12px;background:var(--accent-soft)"></div>')+'<b>'+esc(x.title)+'</b></div><div style="display:flex;gap:8px;flex-wrap:wrap"><label class="btn ghost sm" style="cursor:pointer">'+(x.url?'Trocar':'Enviar foto')+'<input type="file" accept="image/*" data-img="'+esc(x.id)+'" hidden></label>'+(x.url?btn('img-rm',x.id,'','Remover',1):'')+'</div></div>').join('');
   }else if(U.sub==='blq'){
-    b='<div class="cl-grid" style="margin-bottom:18px"><input id="bq-d" type="date" min="'+hoje()+'"><div style="display:flex;gap:8px"><input id="bq-i" type="time" value="09:00"><input id="bq-f" type="time" value="18:00"></div><input id="bq-m" placeholder="Motivo (só você vê)"><button class="btn" data-cl="blq-add">Bloquear horário</button></div>'+
+    b='<div class="cl-grid" style="margin-bottom:18px"><input id="bq-d" type="date" min="'+hoje()+'"><div style="display:flex;gap:8px"><input id="bq-i" type="time" value="13:00"><input id="bq-f" type="time" value="18:00"></div><input id="bq-m" placeholder="Motivo (só você vê)"><button class="btn" data-cl="blq-add">Bloquear horário</button></div>'+
      (U.bq.map(x=>'<div class="cl-row"><div><b>'+br(x.data)+' · '+esc(String(x.inicio).slice(0,5))+' às '+esc(String(x.fim).slice(0,5))+'</b><small>'+esc(x.motivo||'')+'</small></div>'+btn('blq-rm',x.id,'','Remover',1)+'</div>').join('')||'<p class="sub">Nenhum bloqueio.</p>');
   }else if(U.sub==='res'){
     const mes=U.mes||hoje().slice(0,7), r=U.aAg.filter(a=>a.data.slice(0,7)===mes), n=st=>r.filter(a=>a.status===st).length;

@@ -1,7 +1,7 @@
 /* Calendário de agendamento (página Agendar) */
 (function(){
 'use strict';
-const AG={ini:9*60,fim:18*60,passo:30,fechados:[0],meses:3}; /* 0 = domingo fechado; ajuste aqui */
+const AG={ini:13*60,fim:18*60,passo:30,fechados:[0],meses:3}; /* 0 = domingo fechado; ajuste aqui */
 const MES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const S={serv:[],ocup:[],bloq:[],d:'',h:'',sv:'',nome:'',tel:'',obs:'',cm:(function(){const d=new Date();d.setDate(1);return d;})(),err:'',done:false,link:''};
 let root=null,loaded=false;
