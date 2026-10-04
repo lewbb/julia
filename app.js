@@ -621,7 +621,7 @@ function nlExtrasHTML(){
   '<section class="wrap tight" id="primeira-vez"><div class="split"><div class="stick"><h2 class="serif">Primeira <em>vez</em> aqui?</h2></div>'+acc(NL_PRIMEIRA)+'</div></section>'+
   '<section class="wrap tight" id="cuidados"><div class="split"><div class="stick"><h2 class="serif"><em>Cuidados</em> com as unhas</h2></div>'+acc(NL_CUIDADOS)+'</div></section>'+
   '<section class="wrap tight" id="como-chegar"><div class="head"><div><h2 class="serif">Como <em>chegar</em></h2><p class="sub">'+esc(NL_LOC.name)+'</p></div></div>'+
-  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">'+lc('Endereço',esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.city))+lc('Estacionamento','Consulte pelo WhatsApp')+lc('Pontos de referência','Consulte pelo WhatsApp')+lc('Horários de atendimento',esc(NL_LOC.hours))+'</div>'+
+  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">'+lc('Endereço',esc(NL_LOC.addr)+'<br>'+esc(NL_LOC.city))+lc('Estacionamento','Não temos um privado')+lc('Pontos de referência','Cartório')+lc('Horários de atendimento',esc(NL_LOC.hours))+'</div>'+
   '<div style="margin-top:16px;border-radius:24px;overflow:hidden;border:1px solid var(--accent-soft)"><iframe title="Mapa: '+esc(full)+'" src="'+embed+'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen style="display:block;width:100%;height:380px;border:0"></iframe></div>'+
   '<p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="btn" href="'+rota+'" target="_blank" rel="noopener">Como chegar</a><a class="btn ghost" href="'+waze+'" target="_blank" rel="noopener">Abrir no Waze</a></p></section>';
 }
