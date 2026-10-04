@@ -138,6 +138,11 @@ function slotInner(id,title,tone){
 function slot(id,title,tone,cls){
   return '<div class="slot '+(cls||'')+'" data-slot="'+id+'" data-title="'+esc(title)+'" data-tone="'+tone+'">'+slotInner(id,title,tone)+'</div>';
 }
+window.JRImg={
+  slots(){ const m=new Map(); document.querySelectorAll('[data-slot]').forEach(e=>{ if(e.closest('#lb')||m.has(e.dataset.slot)) return; m.set(e.dataset.slot,{id:e.dataset.slot,title:e.dataset.title||e.dataset.slot,url:state.images[e.dataset.slot]||''}); }); return [...m.values()]; },
+  set(id,url){ if(url) state.images[id]=url; else delete state.images[id]; document.querySelectorAll('[data-slot="'+id+'"]').forEach(e=>{ e.innerHTML=slotInner(id,e.dataset.title||'',e.dataset.tone||1); }); },
+  load(map){ Object.keys(map||{}).forEach(id=>this.set(id,map[id])); }
+};
 const MARQUEE_FONTS=[
   "'Playfair Display',serif;font-style:italic",
   "'Bebas Neue',sans-serif;letter-spacing:.05em;font-size:1.2em",
@@ -176,7 +181,7 @@ function footer(){
    (p.igMarketing?'<li><a href="'+igUrl(p.igMarketing)+'" target="_blank" rel="noopener">Instagram de marketing: @'+esc(p.igMarketing.replace(/^@/,''))+'</a></li>':'')+
    (p.igNails?'<li><a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram de unhas: @'+esc(p.igNails.replace(/^@/,''))+'</a></li>':'')+
    '</ul></div></div>'+
-   '<div class="foot-bot"><span>© '+new Date().getFullYear()+' '+esc(p.name)+'. Todos os direitos reservados.</span><button data-act="top">Voltar ao topo</button><button data-act="adm" style="opacity:.45;font-size:.8rem">Área da Julia</button></div></div></footer><button class="fab" data-act="go" data-target="agendar">Agendar ✦</button>';
+   '<div class="foot-bot"><span>© '+new Date().getFullYear()+' '+esc(p.name)+'. Todos os direitos reservados.</span><button data-act="top">Voltar ao topo</button><button data-act="adm" style="opacity:.45;font-size:.8rem">Área da Julia</button></div></div></footer>';
 }
 
 /* ---------- mundo: marketing ---------- */
@@ -473,15 +478,13 @@ app.addEventListener('change',e=>{
 function reorg(){
  const sec=id=>{const e=id==='#agenda-root'?document.querySelector(id):document.getElementById(id); return e?(e.tagName==='SECTION'?e:e.closest('section')||e):null;};
  const mv=(ancora,ids)=>{ let at=sec(ancora); if(!at) return; ids.forEach(id=>{const s=sec(id); if(s&&s!==at){ at.after(s); at=s; }}); };
- mv('como-funciona-home',['monte','match','calculadora','depoimentos-nl','primeira-vez','cuidados']);
- const band=document.querySelector('.hv-band');
- mv('cuidados',['agendar','#agenda-root']); const ag=sec('#agenda-root'); if(band&&ag) ag.after(band);
+ mv('como-funciona-home',['monte','agendar','#agenda-root','match','calculadora','depoimentos-nl','primeira-vez','cuidados']);
  mv('para-quem',['servicos','depoimentos-mk','prazos','diagnostico']);
 }
 function nlHomeHTML(){
   const st=[['01','Escolha o estilo','Veja os sets, monte o seu ou envie uma inspiração.','💅'],['02','Reserve o horário','Escolha dia e hora livres direto no site.','🗓️'],['03','Curta o resultado','Atendimento com cuidado, higiene e acabamento delicado.','✨']];
   return '<section class="wrap tight" id="como-funciona-home"><div class="head"><div><h2 class="serif">Do pedido ao <em>resultado</em></h2><p class="sub">Simples, em três passos.</p></div></div><div class="hv">'+st.map(x=>'<div class="hv-card"><span class="ic" aria-hidden="true">'+x[3]+'</span><b class="n">'+x[0]+'</b><h3>'+x[1]+'</h3><p>'+x[2]+'</p></div>').join('')+'</div>'+
-  '<div class="hv-band"><h2>Pronta para o seu <em>próximo set?</em></h2><p>Escolha um horário e eu confirmo com você.</p><button class="btn" data-act="go" data-target="agendar">Agendar agora</button></div></section>';
+  '</section>';
 }
 function nailsHTML(){
   const p=state.profile;
@@ -534,7 +537,7 @@ function lightboxHTML(){
 function render(){
   const y=window.scrollY;
   document.documentElement.dataset.mode=mode; document.documentElement.dataset.nv=nv;
-  app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>'+'<a class="wa-fab" href="'+wa()+'" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7a11 11 0 0 1-4.5-3.9c-.4-.5-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.4.1.2.1.8-.1 1.4z"/></svg></a>';
+  app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>'+'<div class="fabs"><button class="fab" data-act="go" data-target="agendar">Agendar ✦</button><a class="wa-fab" href="'+wa()+'" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7a11 11 0 0 1-4.5-3.9c-.4-.5-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.4.1.2.1.8-.1 1.4z"/></svg></a></div>';
   document.body.classList.toggle('editing',editing);
   if(ART) mountEditBar();
   reorg();

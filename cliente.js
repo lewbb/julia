@@ -77,7 +77,7 @@ const tel=a=>String(a.telefone||'').replace(/\D/g,''), waNum=t=>(t.length<=11?'5
 function msgWa(a){ const n=String(a.nome||'').split(' ')[0], h=String(a.horario||'').slice(0,5); if(a.status==='espera') return 'Oi, '+n+'! Abriu uma vaga para '+a.servico+'. Quer aproveitar? Me diga o melhor dia e horário ✦'; return 'Oi, '+n+'! Seu horário '+(a.status==='pendente'?'foi recebido':'está confirmado')+': '+a.servico+', '+br(a.data)+(h?' às '+h:'')+'. Se tiver algum imprevisto, me avise com 24h de antecedência. Te espero! ✦ '+(P.name||'Julia Ruth'); }
 const btn=(k,id,v,t,g)=>'<button class="btn'+(g?' ghost':'')+' sm" data-cl="'+k+'" data-id="'+id+'" data-v="'+v+'">'+t+'</button>';
 function tabAdmin(){
-  const T=[['ped','Pedidos'],['av','Avaliações ('+U.aAv.length+')'],['val','Valores'],['blq','Bloqueios'],['res','Resumo'],['cli','Clientes']];
+  const T=[['ped','Pedidos'],['img','Imagens'],['av','Avaliações ('+U.aAv.length+')'],['val','Valores'],['blq','Bloqueios'],['res','Resumo'],['cli','Clientes']];
   const nav='<div class="cl-tabs">'+T.map(x=>'<button class="chip" data-cl="sub" data-v="'+x[0]+'" aria-pressed="'+(U.sub===x[0])+'">'+x[1]+'</button>').join('')+'</div>';
   let b='';
   if(U.sub==='ped'){
@@ -85,11 +85,14 @@ function tabAdmin(){
     let l=U.aAg.filter(a=>U.fil==='cancelado'?(a.status==='cancelado'||a.status==='recusado'):a.status===U.fil);
     if(U.fil==='pendente'||U.fil==='confirmado') l=l.slice().reverse();
     b='<div class="cl-tabs">'+F.map(x=>'<button class="chip" data-cl="fil" data-v="'+x[0]+'" aria-pressed="'+(U.fil===x[0])+'">'+x[1]+' ('+U.aAg.filter(a=>x[0]==='cancelado'?(a.status==='cancelado'||a.status==='recusado'):a.status===x[0]).length+')</button>').join('')+'</div>'+
-     (l.map(a=>{const t=tel(a),h=String(a.horario||'').slice(0,5),st=a.status;return '<div class="cl-row"><div><b>'+br(a.data)+(h?' às '+h:'')+' · '+esc(a.nome)+'</b><small>'+esc(a.servico)+' · '+LBL[st]+(st==='concluido'&&a.valor!=null?' · R$ '+Number(a.valor).toFixed(2).replace('.',','):'')+(a.obs?' · '+esc(a.obs):'')+'</small></div><div style="display:flex;gap:8px;flex-wrap:wrap">'+(t?'<a class="btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/'+waNum(t)+'?text='+encodeURIComponent(msgWa(a))+'">WhatsApp</a>':'')+(st==='pendente'?btn('adm-ag',a.id,'confirmado','Confirmar')+btn('adm-ag',a.id,'recusado','Recusar',1):'')+(st==='confirmado'?btn('adm-ag',a.id,'concluido','Concluir')+btn('adm-ag',a.id,'cancelado','Cancelar',1):'')+(st==='espera'?btn('adm-ag',a.id,'pendente','Chamar para agendar')+btn('adm-ag',a.id,'cancelado','Remover',1):'')+'</div></div>';}).join('')||'<p class="sub">Nada por aqui.</p>');
+     (l.map(a=>{const t=tel(a),h=String(a.horario||'').slice(0,5),st=a.status;return '<div class="cl-row"><div><b>'+br(a.data)+(h?' às '+h:'')+' · '+esc(a.nome)+'</b><small>'+esc(a.servico)+(a.telefone?' · '+esc(a.telefone):'')+' · '+LBL[st]+(st==='concluido'&&a.valor!=null?' · R$ '+Number(a.valor).toFixed(2).replace('.',','):'')+(a.obs?' · '+esc(a.obs):'')+'</small></div><div style="display:flex;gap:8px;flex-wrap:wrap">'+(t?'<a class="btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/'+waNum(t)+'?text='+encodeURIComponent(msgWa(a))+'">WhatsApp</a>':'')+(st==='pendente'?btn('adm-ag',a.id,'confirmado','Confirmar')+btn('adm-ag',a.id,'recusado','Recusar',1):'')+(st==='confirmado'?btn('adm-ag',a.id,'concluido','Concluir')+btn('adm-ag',a.id,'cancelado','Cancelar',1):'')+(st==='espera'?btn('adm-ag',a.id,'pendente','Chamar para agendar')+btn('adm-ag',a.id,'cancelado','Remover',1):'')+'</div></div>';}).join('')||'<p class="sub">Nada por aqui.</p>');
   }else if(U.sub==='av'){
     b=U.aAv.map(a=>'<div class="cl-row"><div><b>'+stars(a.nota)+' · '+esc(a.nome)+'</b><small>'+esc(a.comentario||'')+'</small></div><div style="display:flex;gap:8px">'+btn('adm-av',a.id,'ok','Aprovar')+btn('adm-av',a.id,'rm','Remover',1)+'</div></div>').join('')||'<p class="sub">Nenhuma avaliação para aprovar.</p>';
   }else if(U.sub==='val'){
     b=U.servicos.map(s=>'<div class="cl-row"><b style="flex:1;min-width:150px">'+esc(s.nome)+'</b><input id="sp-'+s.id+'" type="number" step="0.01" value="'+(s.preco||0)+'" style="width:100px" aria-label="Preço"><input id="sd-'+s.id+'" type="number" step="5" value="'+(s.duracao_min||90)+'" style="width:80px" aria-label="Minutos"><button class="btn sm" data-cl="srv-save" data-id="'+s.id+'">Salvar</button></div>').join('')+'<small>Preço em R$ e duração em minutos. A duração define os horários livres no calendário.</small>';
+  }else if(U.sub==='img'){
+    const L=(window.JRImg?window.JRImg.slots():[]);
+    b='<p class="sub" style="margin-bottom:14px">Escolha uma foto para trocar. Ela aparece no site na hora, para todo mundo.</p>'+L.map(x=>'<div class="cl-row"><div style="display:flex;gap:12px;align-items:center">'+(x.url?'<img src="'+esc(x.url)+'" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:12px">':'<div style="width:56px;height:56px;border-radius:12px;background:var(--accent-soft)"></div>')+'<b>'+esc(x.title)+'</b></div><div style="display:flex;gap:8px;flex-wrap:wrap"><label class="btn ghost sm" style="cursor:pointer">'+(x.url?'Trocar':'Enviar foto')+'<input type="file" accept="image/*" data-img="'+esc(x.id)+'" hidden></label>'+(x.url?btn('img-rm',x.id,'','Remover',1):'')+'</div></div>').join('');
   }else if(U.sub==='blq'){
     b='<div class="cl-grid" style="margin-bottom:18px"><input id="bq-d" type="date" min="'+hoje()+'"><div style="display:flex;gap:8px"><input id="bq-i" type="time" value="09:00"><input id="bq-f" type="time" value="18:00"></div><input id="bq-m" placeholder="Motivo (só você vê)"><button class="btn" data-cl="blq-add">Bloquear horário</button></div>'+
      (U.bq.map(x=>'<div class="cl-row"><div><b>'+br(x.data)+' · '+esc(String(x.inicio).slice(0,5))+' às '+esc(String(x.fim).slice(0,5))+'</b><small>'+esc(x.motivo||'')+'</small></div>'+btn('blq-rm',x.id,'','Remover',1)+'</div>').join('')||'<p class="sub">Nenhum bloqueio.</p>');
@@ -160,16 +163,32 @@ async function act(a){
   if(k==='av-add'){ const r=await q.from('avaliacoes').insert({user_id:U.user.id,nome:((U.perfil.nome||'Cliente').split(' ')[0]),nota:+val('cl-nota'),comentario:val('cl-com')||null}); if(r.error) return erro(r.error); return refresh('Obrigada! Sua avaliação foi enviada para aprovação.'); }
   if(k==='av-rm'){ await q.from('avaliacoes').delete().eq('id',id); return refresh(''); }
   if(k==='adm-ag'){ const up={status:v}; if(v==='concluido'){ const a0=U.aAg.find(x=>String(x.id)===id)||{}, x=prompt('Valor cobrado (R$):',((U.servicos.find(s=>s.nome===a0.servico)||{}).preco||'')); if(x===null) return; up.valor=Number(String(x).replace(',','.'))||0; } const r=await q.from('agendamentos').update(up).eq('id',id); if(r.error) return erro(r.error); return refresh(v==='confirmado'?'Horário confirmado.':'Horário recusado.'); }
+  if(k==='img-rm'){ const m=Object.assign({},(U.site||{}).img||{}); delete m[id]; const r=await saveSite(m); if(r.error) return erro(r.error); window.JRImg.set(id,''); U.msg='Foto removida.'; paint(); return; }
   if(k==='adm-av'){ const r=v==='ok'?await q.from('avaliacoes').update({aprovada:true}).eq('id',id):await q.from('avaliacoes').delete().eq('id',id); if(r.error) return erro(r.error); return refresh(v==='ok'?'Avaliação publicada.':'Avaliação removida.'); }
   }catch(e){ erro(e); }
 }
 document.addEventListener('click',e=>{ const a=e.target.closest('[data-cl]'); if(a&&ready&&root&&root.contains(a)) act(a); });
 document.addEventListener('change',e=>{ if(!ready) return; if(e.target.id==='cl-serv') drawSlots(); if(e.target.id==='cl-mes'){ U.mes=e.target.value; paint(); } });
 
+
+const encolher=f=>new Promise((ok,no)=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?ok(b):no(new Error('Imagem inválida')),'image/jpeg',.85);};im.onerror=()=>no(new Error('Imagem inválida'));im.src=URL.createObjectURL(f);});
+async function saveSite(img){ U.site=Object.assign({},U.site||{},{img}); return U.sb.from('site_config').upsert({id:1,data:U.site}); }
+async function loadSite(){ try{ const r=await U.sb.from('site_config').select('data').eq('id',1).maybeSingle(); U.site=(r.data&&r.data.data)||{img:{}}; if(window.JRImg) window.JRImg.load(U.site.img); }catch(e){} }
+document.addEventListener('change',async e=>{
+  const id=e.target&&e.target.dataset&&e.target.dataset.img, f=e.target.files&&e.target.files[0]; if(!id||!f||!U.sb) return;
+  U.msg='Enviando a foto…'; paint();
+  try{
+    const b=await encolher(f), n=id.replace(/[^a-z0-9_-]/gi,'_')+'-'+Date.now()+'.jpg';
+    const up=await U.sb.storage.from('site').upload(n,b,{contentType:'image/jpeg'}); if(up.error) throw up.error;
+    const url=U.sb.storage.from('site').getPublicUrl(n).data.publicUrl, m=Object.assign({},(U.site||{}).img||{}); m[id]=url;
+    const r=await saveSite(m); if(r.error) throw r.error;
+    window.JRImg.set(id,url); U.msg='Foto trocada!'; paint();
+  }catch(x){ U.msg='Não foi possível enviar a foto: '+((x&&x.message)||'tente de novo'); paint(); }
+});
 window.ClienteUI={mount(el){
   root=el; if(!el) return; paint();
   if(!ready||U.sb) return;
-  U.sb=window.supabase.createClient(CFG.url,CFG.key); window.JR={ready:true,sb:U.sb,user:null,wa:waUrl,refresh:()=>refresh()}; window.JR_CFG={pix:P.pix||'',sinal:P.sinal||0};
+  U.sb=window.supabase.createClient(CFG.url,CFG.key); loadSite(); window.JR={ready:true,sb:U.sb,user:null,wa:waUrl,refresh:()=>refresh()}; window.JR_CFG={pix:P.pix||'',sinal:P.sinal||0};
   U.sb.auth.onAuthStateChange((ev,s)=>{ U.user=s?s.user:null; if(window.JR) window.JR.user=U.user; if(!U.user) U.tab='agenda'; setTimeout(()=>refresh(ev==='SIGNED_IN'?'':undefined),0); });
   U.sb.auth.getSession().then(r=>{ U.user=r.data.session?r.data.session.user:null; if(window.JR) window.JR.user=U.user; refresh(); });
 }};
