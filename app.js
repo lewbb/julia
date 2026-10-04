@@ -519,7 +519,7 @@ function navHTML(){
    {v:'m-contato',t:'Contato',i:[['contato','Fale comigo'],['prazos','Prazos e pagamento']]}];
   const NG=[
    {v:'inicio',t:'Início',i:[['sobre-nl','Sobre mim'],['estilos','Estilos'],['antes-depois','Antes e depois'],['porque-nl','Por que escolher'],['depoimentos-nl','Depoimentos']]},
-   {v:'criar',t:'Criar',i:[['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['ocasioes','Unhas por ocasião']]},
+   {v:'criar',t:'Criar',i:[['monte','Monte seu set'],['match','Nail Match'],['calculadora','Calculadora'],['ocasioes','Unhas por ocasião'],['sugestoes','Sugerir compra']]},
    {v:'valores',t:'Valores',i:[['precos','Catálogo de preços'],['preco-nail-art','Preço da nail art'],['duvidas-valores','Dúvidas sobre valores']]},
    {v:'info',t:'Informações',i:[['primeira-vez','Primeira vez'],['cuidados','Cuidados'],['como-chegar','Como chegar'],['duvidas-nl','Dúvidas'],['atendimento','Como é o atendimento'],['biosseguranca','Higiene e cuidados']]},
    {v:'agendar',t:'Agendar',i:[['agendar','Agendar'],['agendar-passos','Como agendar']]}];
@@ -660,7 +660,7 @@ const EXTRA={
    {t:'Quem está começando',d:'Você tem um negócio ou serviço e quer aparecer nas redes com cara de marca, sem se perder.'},
    {t:'Quem já posta',d:'Seu perfil existe, mas falta constância, identidade ou clareza do que comunicar.'},
    {t:'Quem quer vender mais',d:'Você precisa que o conteúdo fale com o público certo e leve a pessoa até o seu contato.'}])+
-  cardsHTML('depoimentos-mk','O que <em>dizem</em> por aí','',XT('[Nome da cliente ','[Escreva aqui o depoimento de uma cliente de marketing.]')),
+  '<section class="wrap tight" id="depoimentos-mk"><div class="head"><div><h2 class="serif">O que <em>dizem</em> por aí</h2><p class="sub">Conte como foi trabalhar com a Julia.</p></div></div><div id="avaliar-root-mk"></div></section>',
  'm-servicos':()=>cardsHTML('pacotes','Pacotes e <em>formatos</em>','Escolha o caminho que combina com o momento da sua marca.',PACKS.map(p=>({t:p.n,d:p.d,cta:'Olá, '+state.profile.name+'! Tenho interesse em: '+p.n+'.',b:'Quero esse pacote'}))),
  'm-portfolio':()=>cardsHTML('redes-mk','Acompanhe nas <em>redes</em>','Mais trabalhos e bastidores no Instagram.',[
    {t:'Instagram',d:'Novos projetos, bastidores e dicas de conteúdo.',href:igUrl(state.profile.igMarketing),b:'Ver @'+state.profile.igMarketing.replace(/^@/,'')},
@@ -679,7 +679,7 @@ const EXTRA={
    {t:'Autoral de verdade',d:'Do delicado ao temático, a arte nasce da sua referência e ganha o meu toque.'},
    {t:'Acabamento e durabilidade',d:'Técnica e produtos escolhidos para o resultado durar, com manutenção combinada.'}])+
   '<section class="wrap tight" id="depoimentos-nl"><div class="head"><div><h2 class="serif">Clientes <em>felizes</em></h2><p class="sub">Conte como foi o seu atendimento.</p></div></div><div id="avaliar-root"></div></section>',
- 'criar':()=>cardsHTML('ocasioes','Unhas por <em>ocasião</em>','Conte para onde vão as suas unhas e eu monto o set ideal.',
+ 'criar':()=>'<section class="wrap tight" id="sugestoes"><div class="head"><div><h2 class="serif">Sugira para a <em>próxima unha</em></h2><p class="sub">Viu algo que combina com o estilo da Julia? Sugira um material, cor ou produto para ela comprar.</p></div></div><div id="sugestao-root"></div></section>'+cardsHTML('ocasioes','Unhas por <em>ocasião</em>','Conte para onde vão as suas unhas e eu monto o set ideal.',
    ['Noiva e madrinhas','Festas e eventos','Viagens e férias','Trabalho e dia a dia','Temas especiais'].map(o=>({t:o,d:'Me envie a sua referência e combinamos cores, formato e arte.',cta:'Olá, '+state.profile.name+'! Quero unhas para: '+o+'.',b:'Quero para isso'}))),
  'valores':()=>accSec('duvidas-valores','Dúvidas sobre <em>valores</em>',[
    {t:'O valor da nail art muda?',p:'Sim. Depende da quantidade de unhas decoradas e do nível de detalhe. Use a calculadora para ter uma estimativa.'},
