@@ -1951,6 +1951,43 @@ html[data-nv="cliente"] .nview[data-v="cliente"]{display:block;animation:nvin .3
 html[data-nv="cliente"] .ng-b[data-v="cliente"]{background:var(--accent);color:var(--on-accent)}
 html[data-nv="cliente"] .sg>button[data-v="cliente"]{color:var(--accent);font-style:italic}
 </style>
+<style id="visual-v2">
+:root{--hi:#7FB6EE;--pearl:linear-gradient(120deg,#DDD1FB,#E6EEFC 55%,#D3E8FC)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--hi:#8EC6F7;--pearl:linear-gradient(120deg,#2C2461,#173453)}}
+:root[data-theme="dark"]{--hi:#8EC6F7;--pearl:linear-gradient(120deg,#2C2461,#173453)}
+body{background-image:radial-gradient(40vmax 40vmax at 100% 0,color-mix(in srgb,var(--lilac) 70%,transparent),transparent 70%),radial-gradient(35vmax 35vmax at 0 60%,color-mix(in srgb,var(--sky) 80%,transparent),transparent 70%);background-attachment:fixed}
+.serif em{background:linear-gradient(100deg,var(--accent),var(--hi));-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+:root[data-mode="nails"] .serif em{font-family:'Caveat',cursive;font-style:normal;font-weight:600;font-size:1.14em}
+.lead,.sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.18em}
+.btn:not(.ghost){background:linear-gradient(120deg,var(--accent),color-mix(in srgb,var(--accent) 55%,var(--hi)));border:0;transition:transform .25s,box-shadow .25s}
+.btn:not(.ghost):hover{transform:translateY(-2px);box-shadow:0 10px 26px -8px var(--shadow)}
+.price-card,.hv-card{transition:transform .3s,box-shadow .3s}.price-card:hover,.hv-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -18px var(--shadow)}
+.head::before{content:"✦  ✧  ✦";display:block;color:var(--hi);letter-spacing:.5em;font-size:.8rem;margin-bottom:8px}
+.hv{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:22px}
+.hv-card{position:relative;overflow:hidden;background:var(--pearl);border:1px solid var(--line);border-radius:28px 28px 28px 8px;padding:26px}
+.hv-card b.n{font-family:'Bebas Neue',sans-serif;font-size:4rem;line-height:1;color:var(--hi);opacity:.85;display:block}
+.hv-card h3{margin:6px 0;font-family:var(--font-display);font-size:1.5rem;font-weight:400}.hv-card p{margin:0;color:var(--muted);font-size:.95rem}
+.hv-card .ic{position:absolute;right:16px;top:12px;font-size:1.6rem;opacity:.7}
+.hv-band{max-width:1100px;width:calc(100% - 40px);box-sizing:border-box;margin:40px auto;border-radius:36px;padding:34px 26px;text-align:center;background:linear-gradient(120deg,var(--strong-bg),color-mix(in srgb,var(--strong-bg) 60%,#2A68AA));color:#fff}
+.hv-band h2{margin:0 0 6px;font-family:var(--font-display);font-weight:400;font-size:clamp(1.8rem,4vw,2.6rem)}.hv-band p{margin:0 0 16px;opacity:.85}
+.hv-band .btn{background:#fff!important;color:#331B80!important}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:none;padding:13px 20px;border-radius:99px;background:linear-gradient(120deg,var(--accent),var(--hi));color:#fff;font-weight:700;box-shadow:0 10px 26px -8px var(--shadow);cursor:pointer}
+:root[data-mode="nails"] .fab{display:inline-block}:root[data-nv="agendar"] .fab{display:none}
+@supports(animation-timeline:view()){.hv-card,.grid>*,.price-card{animation:rise both;animation-timeline:view();animation-range:entry 0% cover 28%}@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.serif em{background-size:220% 100%;animation:shine 7s ease-in-out infinite alternate}@keyframes shine{to{background-position:100% 0}}
+.btn{position:relative;overflow:hidden}.btn::after,.hv-card::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}
+.btn:hover::after,.hv-card:hover::after{transform:translateX(120%);transition:transform .8s}
+.hv-card{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s,box-shadow .3s}
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#fx i{position:absolute;bottom:-30px;color:var(--hi);opacity:0;animation:up linear infinite}@keyframes up{10%{opacity:.7}60%{opacity:.5}to{transform:translateY(-110vh) rotate(180deg) scale(.6);opacity:0}}
+#fx b{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;animation:drift 18s ease-in-out infinite alternate}@keyframes drift{to{transform:translate(8vw,-6vh) scale(1.2)}}
+.trail{position:fixed;pointer-events:none;z-index:99;color:var(--accent);font-size:14px;animation:tr .8s forwards}@keyframes tr{to{opacity:0;transform:translateY(18px) scale(.3) rotate(120deg)}}
+.marquee,.mq{background:var(--pearl)}
+.ag input,.ag select,.ag textarea{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;box-sizing:border-box}.ag input:focus,.ag select:focus,.ag textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}.price-card.ag:hover{transform:none;box-shadow:none}
+#agendar{padding-bottom:0!important;margin-bottom:0!important}#agendar .contact{margin-bottom:0}#agendar+section{padding-top:8px!important;margin-top:0!important}
+</style>
 </head>
 <body data-k="" monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.22">
 <div id="app" data-k=""></div>

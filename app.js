@@ -176,7 +176,7 @@ function footer(){
    (p.igMarketing?'<li><a href="'+igUrl(p.igMarketing)+'" target="_blank" rel="noopener">Instagram de marketing: @'+esc(p.igMarketing.replace(/^@/,''))+'</a></li>':'')+
    (p.igNails?'<li><a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram de unhas: @'+esc(p.igNails.replace(/^@/,''))+'</a></li>':'')+
    '</ul></div></div>'+
-   '<div class="foot-bot"><span>© '+new Date().getFullYear()+' '+esc(p.name)+'. Todos os direitos reservados.</span><button data-act="top">Voltar ao topo</button><button data-act="adm" style="opacity:.45;font-size:.8rem">Área da Julia</button></div></div></footer>';
+   '<div class="foot-bot"><span>© '+new Date().getFullYear()+' '+esc(p.name)+'. Todos os direitos reservados.</span><button data-act="top">Voltar ao topo</button><button data-act="adm" style="opacity:.45;font-size:.8rem">Área da Julia</button></div></div></footer><button class="fab" data-act="go" data-target="agendar">Agendar ✦</button>';
 }
 
 /* ---------- mundo: marketing ---------- */
@@ -469,6 +469,20 @@ app.addEventListener('change',e=>{
   if(e.target&&e.target.id==='sb-file'){ const files=e.target.files; if(files&&files.length) sbAddPhotos(files); e.target.value=''; }
 });
 
+/* traz as seções pedidas para a tela inicial de cada área */
+function reorg(){
+ const sec=id=>{const e=id==='#agenda-root'?document.querySelector(id):document.getElementById(id); return e?(e.tagName==='SECTION'?e:e.closest('section')||e):null;};
+ const mv=(ancora,ids)=>{ let at=sec(ancora); if(!at) return; ids.forEach(id=>{const s=sec(id); if(s&&s!==at){ at.after(s); at=s; }}); };
+ mv('como-funciona-home',['monte','match','calculadora','depoimentos-nl','primeira-vez','cuidados']);
+ const band=document.querySelector('.hv-band');
+ mv('cuidados',['agendar','#agenda-root']); const ag=sec('#agenda-root'); if(band&&ag) ag.after(band);
+ mv('para-quem',['servicos','depoimentos-mk','prazos','diagnostico']);
+}
+function nlHomeHTML(){
+  const st=[['01','Escolha o estilo','Veja os sets, monte o seu ou envie uma inspiração.','💅'],['02','Reserve o horário','Escolha dia e hora livres direto no site.','🗓️'],['03','Curta o resultado','Atendimento com cuidado, higiene e acabamento delicado.','✨']];
+  return '<section class="wrap tight" id="como-funciona-home"><div class="head"><div><h2 class="serif">Do pedido ao <em>resultado</em></h2><p class="sub">Simples, em três passos.</p></div></div><div class="hv">'+st.map(x=>'<div class="hv-card"><span class="ic" aria-hidden="true">'+x[3]+'</span><b class="n">'+x[0]+'</b><h3>'+x[1]+'</h3><p>'+x[2]+'</p></div>').join('')+'</div>'+
+  '<div class="hv-band"><h2>Pronta para o seu <em>próximo set?</em></h2><p>Escolha um horário e eu confirmo com você.</p><button class="btn" data-act="go" data-target="agendar">Agendar agora</button></div></section>';
+}
 function nailsHTML(){
   const p=state.profile;
   return '<div class="world" data-w="nails"><div class="nview" data-v="inicio">'+
@@ -480,12 +494,12 @@ function nailsHTML(){
   '<section class="wrap" id="estilos"><div class="head"><div><h2 class="serif">Estilos que <em>eu amo</em> fazer</h2><p class="sub">Toque em qualquer set para ver de perto.</p></div>'+chips('nl',NL_CATS)+'</div><div class="grid arches" id="grid-nl">'+gridHTML('nl')+'</div></section>'+
   '<section class="wrap tight" id="antes-depois"><div class="head"><div><h2 class="serif">Antes e <em>depois</em></h2><p class="sub">Arraste para comparar.</p></div></div>'+
    '<div class="ba"><div class="ba-a">'+slot('nl-after','Depois',2)+'</div><div class="ba-b">'+slot('nl-before','Antes',3)+'</div><span class="ba-line"></span><span class="ba-knob" aria-hidden="true">↔</span><input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois"><span class="ba-tag l">Antes</span><span class="ba-tag r">Depois</span></div></section>'+
-  X('inicio')+'</div><div class="nview" data-v="criar">'+
+  nlHomeHTML()+X('inicio')+'</div><div class="nview" data-v="criar">'+
   '<section class="wrap tight" id="monte"><div class="head"><div><h2 class="serif">Monte o <em>seu set</em></h2><p class="sub">Envie fotos de inspiração, recorte a unha de cada dedo e veja tudo montado na mão modelo.</p></div></div>'+
    sbBuilderHTML()+'</section>'+
   nlExtrasHTML()+ '<section class="wrap tight" id="duvidas-nl"><div class="split"><div class="stick"><h2 class="serif">Dúvidas <em>comuns</em></h2></div>'+acc(FAQ_NL)+'</div></section>'+
   X('info')+'</div><div class="nview" data-v="agendar">'+
-  '<section class="wrap tight" id="agendar"><div class="contact"><div><h2 class="serif">Bora <em>agendar?</em></h2><p class="sub">Me chame no WhatsApp com a sua referência e escolhemos o melhor horário.</p></div><div class="links-col" style="margin-top:0"><a href="'+wa('Olá, '+p.name+'! Quero agendar unhas.')+'" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>'+(p.igNails?'<a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram @'+esc(p.igNails.replace(/^@/,''))+'</a>':'')+'</div></div></section>'+
+  '<section class="wrap tight" id="agendar"><div class="contact"><div><h2 class="serif">Bora <em>agendar?</em></h2></div><div class="links-col" style="margin-top:0">'+(p.igNails?'<a href="'+igUrl(p.igNails)+'" target="_blank" rel="noopener">Instagram @'+esc(p.igNails.replace(/^@/,''))+'</a>':'')+'</div></div></section>'+
   '<section class="wrap tight"><div id="agenda-root"></div></section>'+
   '<section class="wrap tight"><div class="portal"><p>Tem um negócio? Vamos colocar a sua marca no digital.</p><button class="btn" data-act="mode" data-mode="marketing">Conhecer o marketing</button></div></section>'+
   X('agendar')+'</div><div class="nview" data-v="cliente"><section class="wrap tight" id="cliente-area"><div class="head"><div><h2 class="serif">Painel da <em>Julia</em></h2><p class="sub">Pedidos, valores, bloqueios e clientes.</p></div></div><div id="cliente-root"></div></section></div></div>';
@@ -523,6 +537,7 @@ function render(){
   app.innerHTML=navHTML()+'<main>'+marketingHTML()+nailsHTML()+'</main>'+footer()+lightboxHTML()+'<div class="wipe" id="wipe" aria-hidden="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>'+'<a class="wa-fab" href="'+wa()+'" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .2-3.3-.7a11 11 0 0 1-4.5-3.9c-.4-.5-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.4.1.2.1.8-.1 1.4z"/></svg></a>';
   document.body.classList.toggle('editing',editing);
   if(ART) mountEditBar();
+  reorg();
   if(window.ClienteUI) window.ClienteUI.mount($('#cliente-root'));
   if(window.AgendaUI) window.AgendaUI.mount($('#agenda-root'));
   window.scrollTo(0,y);
@@ -531,22 +546,22 @@ function render(){
 /* ---------- ações ---------- */
 
 /* ---------- novidades Unhas (sem banco) ---------- */
-const NL_LOC={addr:'[ENDEREÇO DO ATENDIMENTO]',ref:'[Ponto de referência]',hours:'[Dias e horários de atendimento]'};
+const NL_LOC={addr:'[ENDEREÇO DO ATENDIMENTO]',ref:'[Ponto de referência]',hours:'Segunda a sábado, das 9h às 18h, com horário marcado'};
 const NL_PRIMEIRA=[
- {t:'Como é o primeiro atendimento?',p:'[Explique como funciona: conversa, escolha do set, tempo médio e o que a cliente pode esperar.]'},
- {t:'O que levar?',p:'[Fotos de referência, unhas sem esmalte se possível, e a vontade de contar o que você imagina.]'},
- {t:'Preciso pagar sinal?',p:'[Explique a política de sinal para novas clientes.]'}
+ {t:'Como é o primeiro atendimento?',p:'Começamos com uma conversa sobre o que você imagina e olhamos as suas referências. Escolhemos juntas o formato, o comprimento e a arte. Depois faço o procedimento com calma e, no final, explico os cuidados e quando fazer a manutenção.'},
+ {t:'O que levar?',p:'Fotos de referência, se tiver. Se possível, venha sem esmalte nas unhas e me conte como é a sua rotina, para escolhermos algo que combine com você.'},
+ {t:'Preciso pagar sinal?',p:'Em alguns casos peço um sinal para reservar o horário. Eu te aviso depois do seu pedido, e qualquer dúvida você pode me perguntar.'}
 ];
 const NL_CUIDADOS=[
- {t:'Nas primeiras 24 horas',p:'[Evite água muito quente, produtos de limpeza sem luvas e usar as unhas como ferramenta.]'},
- {t:'No dia a dia',p:'[Hidrate cutículas com óleo, use luvas para limpeza e não arranque nem puxe a unha.]'},
- {t:'Quando fazer a manutenção',p:'A cada 15 dias para o Molde F1, conforme a tabela de preços. [Ajuste para os outros procedimentos.]'},
- {t:'Algo deu errado?',p:'[Se descolar ou quebrar, fale comigo pelo WhatsApp. Não tente arrancar em casa.]'}
+ {t:'Nas primeiras 24 horas',p:'Evite água muito quente, produtos de limpeza sem luvas e não use as unhas como ferramenta, como para abrir latas ou raspar etiquetas.'},
+ {t:'No dia a dia',p:'Hidrate as cutículas com óleo, use luvas para a limpeza e nunca arranque ou puxe a unha.'},
+ {t:'Quando fazer a manutenção',p:'A cada 15 dias para o Molde F1, conforme a tabela de preços. Para os outros procedimentos, combinamos o prazo no atendimento.'},
+ {t:'Algo deu errado?',p:'Se descolar ou quebrar, fale comigo pelo WhatsApp. Não tente arrancar em casa, para não machucar a unha natural.'}
 ];
 const NL_PRECO_ART=[
- {id:'nl-pr-1',t:'Detalhes simples',d:'[Ex.: francesinha, glitter, 1 ou 2 unhas decoradas. Explique o que pesa no valor.]'},
- {id:'nl-pr-2',t:'Arte média',d:'[Ex.: desenhos à mão livre, mais cores e adesivos em várias unhas.]'},
- {id:'nl-pr-3',t:'Arte complexa',d:'[Ex.: temas, personagens e pedrarias. O valor é combinado pelo WhatsApp com a sua referência.]'}
+ {id:'nl-pr-1',t:'Detalhes simples',d:'Francesinha, glitter e uma ou duas unhas decoradas. O valor muda conforme a quantidade de unhas e o tempo de trabalho.'},
+ {id:'nl-pr-2',t:'Arte média',d:'Desenhos à mão livre, mais cores e adesivos em várias unhas.'},
+ {id:'nl-pr-3',t:'Arte complexa',d:'Temas, personagens e pedrarias. O valor é combinado pelo WhatsApp com a sua referência.'}
 ];
 const MQ={
  nm:{tab:'Ruth Nail Match',title:'Qual estilo é a sua cara?',
@@ -589,7 +604,7 @@ function calcUpdate(){
  $('#calc-wa').href=wa(it.length?'Olá, '+state.profile.name+'! Simulei no site: '+it.join(', ')+'. Total estimado: '+brl(v)+'.':'');
 }
 function nlAboutHTML(){
- return '<section class="wrap tight" id="sobre-nl"><div class="about"><div class="portrait">'+slot('nl-about','Foto da '+state.profile.name,1)+'</div><div><h2 class="serif">Oi, eu sou a <em>'+esc(state.profile.name.split(' ')[0])+'</em></h2><p class="sub">[Escreva aqui a sua história com as unhas, seu estilo de atendimento e o que a cliente pode esperar.]</p></div></div></section>';
+ return '<section class="wrap tight" id="sobre-nl"><div class="about"><div class="portrait">'+slot('nl-about','Foto da '+state.profile.name,1)+'</div><div><h2 class="serif">Oi, eu sou a <em>'+esc(state.profile.name.split(' ')[0])+'</em></h2><p class="sub">Faço nail art autoral para quem gosta de unhas bonitas sem abrir mão da saúde da unha natural. Cada atendimento é com hora marcada, com calma e atenção aos detalhes, e a gente conversa sobre a sua referência antes de começar.</p></div></div></section>';
 }
 function nlExtrasHTML(){
  const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(NL_LOC.addr);
@@ -652,9 +667,9 @@ const EXTRA={
    {t:'Materiais',d:'Logo, fotos, textos e links que já existem.'},
    {t:'Objetivo',d:'O que você quer alcançar nos próximos meses.'}]),
  'm-contato':()=>cardsHTML('prazos','Prazos, pagamento e <em>revisões</em>','',[
-   {t:'Prazos',d:'[Informe o prazo médio de entrega para cada tipo de serviço.]'},
-   {t:'Pagamento',d:'[Formas de pagamento, entrada e parcelamento.]'},
-   {t:'Revisões',d:'[Quantas rodadas de ajuste estão incluídas.]'}]),
+   {t:'Prazos',d:'O prazo depende do tipo e do tamanho do projeto. Depois de entender o que você precisa, eu informo a data de entrega antes de começarmos.'},
+   {t:'Pagamento',d:'A forma de pagamento e o valor de entrada são combinados antes de começar, de maneira clara e por escrito.'},
+   {t:'Revisões',d:'Os ajustes fazem parte do processo: você acompanha, pede as mudanças necessárias e aprova antes da entrega final.'}]),
  'inicio':()=>cardsHTML('porque-nl','Por que <em>escolher</em> a Julia','',[
    {t:'Feito para você',d:'Cada set é pensado para o seu estilo, a sua rotina e a saúde da sua unha.'},
    {t:'Autoral de verdade',d:'Do delicado ao temático, a arte nasce da sua referência e ganha o meu toque.'},
@@ -673,12 +688,12 @@ const EXTRA={
    {t:'3. Aplicação e arte',d:'Procedimento escolhido e a nail art combinada.'},
    {t:'4. Finalização',d:'Acabamento, orientações de cuidado e data da manutenção.'}])+
   cardsHTML('biosseguranca','Higiene e <em>cuidados</em>','',[
-   {t:'Materiais higienizados',d:'[Descreva como os instrumentos são higienizados ou esterilizados.]'},
-   {t:'Ambiente organizado',d:'[Descreva o ambiente e as medidas de higiene.]'},
-   {t:'Cuidado com a sua unha',d:'[Descreva o cuidado com a saúde da unha natural.]'}]),
+   {t:'Materiais higienizados',d:'Os instrumentos são limpos e higienizados antes de cada atendimento.'},
+   {t:'Ambiente organizado',d:'O espaço é mantido limpo e organizado, com os materiais separados para cada atendimento.'},
+   {t:'Cuidado com a sua unha',d:'Antes de começar, observo a saúde da sua unha natural. A prioridade é que ela fique bonita e saudável, sem exageros no preparo.'}]),
  'agendar':()=>cardsHTML('agendar-passos','Como <em>agendar</em> em 3 passos','',[
    {t:'1. Escolha o set',d:'Monte o seu set, use o Nail Match ou envie uma referência.'},
-   {t:'2. Chame no WhatsApp',d:'Conte o procedimento e a data que prefere.',cta:'Olá, '+state.profile.name+'! Quero agendar unhas.',b:'Chamar agora'},
+   {t:'2. Escolha o horário',d:'Preencha seus dados e escolha um dia e horário livres na agenda.'},
    {t:'3. Confirme o horário',d:'Eu confirmo o horário e envio as orientações.'}])
 };
 const X=k=>EXTRA[k]?EXTRA[k]():'';
@@ -942,4 +957,21 @@ async function initEdit(){
 
 render();
 initEdit();
+})();
+
+/* efeitos visuais: bolhas, brilhos que sobem, rastro do cursor e inclinação dos cards */
+(function(){
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+ const f=document.createElement('div'); f.id='fx'; f.setAttribute('aria-hidden','true'); let h='';
+ [['--lilac-2',34,8,10],['--sky-2',42,70,60]].forEach(x=>{h+='<b style="width:'+x[1]+'vmax;height:'+x[1]+'vmax;left:'+x[2]+'%;top:'+x[3]+'%;background:var('+x[0]+')"></b>';});
+ for(let k=0;k<16;k++) h+='<i style="left:'+(Math.random()*100).toFixed(1)+'%;font-size:'+(10+Math.random()*14|0)+'px;animation-duration:'+(12+Math.random()*14).toFixed(1)+'s;animation-delay:-'+(Math.random()*20).toFixed(1)+'s">'+(k%3?'✦':'✧')+'</i>';
+ f.innerHTML=h; document.body.prepend(f);
+ if(!matchMedia('(pointer:fine)').matches) return;
+ let t=0;
+ document.addEventListener('pointermove',e=>{
+  const n=Date.now(); if(n-t>70){ t=n; const s=document.createElement('span'); s.className='trail'; s.textContent=Math.random()>.5?'✦':'✧'; s.style.left=e.clientX+6+'px'; s.style.top=e.clientY+6+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),800); }
+  const c=e.target.closest&&e.target.closest('.hv-card'); if(!c) return; const r=c.getBoundingClientRect();
+  c.style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*10+'deg'); c.style.setProperty('--rx',(.5-(e.clientY-r.top)/r.height)*10+'deg');
+ });
+ document.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.hv-card'); if(c){c.style.removeProperty('--rx');c.style.removeProperty('--ry');}});
 })();
